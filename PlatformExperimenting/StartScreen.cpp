@@ -6,7 +6,7 @@ StartScreen::StartScreen() {
 
 	// top bar entities
 	mTopBar = new GameEntity(Graphics::SCREEN_WIDTH * 0.5f, 80.0f);
-	mHiScore = new GLTexture("START SCREEN", "emulogic.ttf", 32, { 255, 255, 255 });
+	mHiScore = new GLTexture("START SCREEN", "emulogic.ttf", 32, { 255, 255, 255 }, false, true, 1000);
 
 	mTopBar->Parent(this);
 	

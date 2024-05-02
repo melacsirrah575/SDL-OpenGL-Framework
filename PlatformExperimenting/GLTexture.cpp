@@ -30,18 +30,35 @@ namespace SDLFramework {
 		FilterMin = GL_LINEAR;
 	}
 
-	GLTexture::GLTexture(std::string text, std::string fontPath, int size, SDL_Color color, bool managed)
+	GLTexture::GLTexture(std::string text, std::string fontPath, int size, SDL_Color color, bool managed, 
+		bool typingEffect, unsigned int textDelay)
 		: Texture(text, fontPath, size, color, managed) { 
-		SetSurfaceTextTexture(text, fontPath, size, color, managed);
 
-		WrapS = GL_CLAMP_TO_BORDER;
-		WrapT = GL_CLAMP_TO_BORDER;
+		if (!typingEffect) {
+			SetSurfaceTextTexture(text, fontPath, size, color, managed);
 
-		FilterMag = GL_LINEAR;
-		FilterMin = GL_LINEAR;
+			WrapS = GL_CLAMP_TO_BORDER;
+			WrapT = GL_CLAMP_TO_BORDER;
 
-		mWidth = Surface->w;
-		mHeight = Surface->h;
+			FilterMag = GL_LINEAR;
+			FilterMin = GL_LINEAR;
+
+			mWidth = Surface->w;
+			mHeight = Surface->h;
+		}
+		else {
+			mTypingText = text;
+			mTypingFont = fontPath;
+			mTypingSize = size;
+			mTypingColor = color;
+			mTypingManaged = managed;
+			mTypingEffect = typingEffect;
+			mTextDelay = textDelay;
+
+			mDisplayIndex = 0;
+			mTextFullyDisplayed = false;
+			mLastDisplayTime = SDL_GetTicks();
+		}
 	}
 
 	GLTexture::~GLTexture() {
@@ -102,6 +119,7 @@ namespace SDLFramework {
 	}
 
 	void GLTexture::SetSurfaceTextTexture(std::string text, std::string filename, int size, SDL_Color color, bool managed) {
+
 		Surface = AssetManager::Instance()->GetTextSurface(text, filename, size, color, managed);
 		Data = Surface->pixels;
 		if (Surface != nullptr) {
@@ -112,8 +130,64 @@ namespace SDLFramework {
 		}
 	}
 
+	void GLTexture::SetSurfaceTypingTextTexture(std::string text, std::string filename, int size, SDL_Color color, bool managed,
+		bool typingEffect, unsigned int textDelay) {
+
+		if (mTypingEffect && !mTextFullyDisplayed) {
+			unsigned int currentTime = SDL_GetTicks();
+			if (currentTime - mLastDisplayTime >= mTextDelay) {
+				if (mDisplayIndex < text.length()) {
+					++mDisplayIndex;
+					std::string partialText = text.substr(0, mDisplayIndex);
+					AssetManager::Instance()->DestroySurface(Surface);
+					//This is GetText()
+					Surface = AssetManager::Instance()->GetTextSurface(partialText, filename, size, color, managed);
+					Data = Surface->pixels;
+
+					mLastDisplayTime = currentTime;
+				}
+				else {
+					mTextFullyDisplayed = true;
+				}
+			}
+			else {
+				std::string tempText = "";
+				if (mDisplayIndex == 0) {
+					 tempText = text.substr(0, 1);
+				}
+				else {
+					tempText = text.substr(0, mDisplayIndex);
+				}
+				//This is GetText()
+				Surface = AssetManager::Instance()->GetTextSurface(tempText, filename, size, color, managed);
+				Data = Surface->pixels;
+			}
+
+		}
+
+		if (Surface != nullptr) {
+			Generate();
+		}
+		else {
+			std::cerr << "Unable to set typing surface text " << filename << " in GLTexture! Surface is null." << std::endl;
+		}
+
+		WrapS = GL_CLAMP_TO_BORDER;
+		WrapT = GL_CLAMP_TO_BORDER;
+
+		FilterMag = GL_LINEAR;
+		FilterMin = GL_LINEAR;
+
+		mWidth = Surface->w;
+		mHeight = Surface->h;
+	}
+
 	void GLTexture::Render() {
 		UpdateDstRect();
+
+		if (mTypingEffect && !mTextFullyDisplayed) {
+			SetSurfaceTypingTextTexture(mTypingText, mTypingFont, mTypingSize, mTypingColor, mTypingManaged, mTypingEffect, mTextDelay);
+		}
 
 		GLGraphics::Instance()->DrawSprite(this, mClipped ? &mSourceRect : nullptr, &mDestinationRect, Rotation(World), Flip);
 	}
