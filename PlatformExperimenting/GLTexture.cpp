@@ -34,6 +34,7 @@ namespace SDLFramework {
 		bool typingEffect, unsigned int textDelay)
 		: Texture(text, fontPath, size, color, managed) { 
 
+		//If we don't want to use the Typing effect, we will just Set the Surface Text Texture here
 		if (!typingEffect) {
 			SetSurfaceTextTexture(text, fontPath, size, color, managed);
 
@@ -46,6 +47,7 @@ namespace SDLFramework {
 			mWidth = Surface->w;
 			mHeight = Surface->h;
 		}
+		//Otherwise, initialize and save inputted data for the future when we apply the effect.
 		else {
 			mTypingText = text;
 			mTypingFont = fontPath;
@@ -133,36 +135,34 @@ namespace SDLFramework {
 	void GLTexture::SetSurfaceTypingTextTexture(std::string text, std::string filename, int size, SDL_Color color, bool managed,
 		bool typingEffect, unsigned int textDelay) {
 
-		if (mTypingEffect && !mTextFullyDisplayed) {
-			unsigned int currentTime = SDL_GetTicks();
-			if (currentTime - mLastDisplayTime >= mTextDelay) {
-				if (mDisplayIndex < text.length()) {
-					++mDisplayIndex;
-					std::string partialText = text.substr(0, mDisplayIndex);
-					AssetManager::Instance()->DestroySurface(Surface);
-					//This is GetText()
-					Surface = AssetManager::Instance()->GetTextSurface(partialText, filename, size, color, managed);
-					Data = Surface->pixels;
+		unsigned int currentTime = SDL_GetTicks();
 
-					mLastDisplayTime = currentTime;
-				}
-				else {
-					mTextFullyDisplayed = true;
-				}
+		//Waits for us to reach delay time, then creates Texture with next letter appended.
+		if (currentTime - mLastDisplayTime >= mTextDelay) {
+			if (mDisplayIndex < text.length()) {
+				++mDisplayIndex;
+				std::string partialText = text.substr(0, mDisplayIndex);
+				AssetManager::Instance()->DestroySurface(Surface);
+				Surface = AssetManager::Instance()->GetTextSurface(partialText, filename, size, color, managed);
+				Data = Surface->pixels;
+
+				mLastDisplayTime = currentTime;
 			}
 			else {
-				std::string tempText = "";
-				if (mDisplayIndex == 0) {
-					 tempText = text.substr(0, 1);
-				}
-				else {
-					tempText = text.substr(0, mDisplayIndex);
-				}
-				//This is GetText()
-				Surface = AssetManager::Instance()->GetTextSurface(tempText, filename, size, color, managed);
-				Data = Surface->pixels;
+				mTextFullyDisplayed = true;
 			}
-
+		}
+		else {
+		//If we are waiting to create the next letter, just display the current progress
+			std::string tempText = "";
+			if (mDisplayIndex == 0) {
+				tempText = " ";
+			}
+			else {
+				tempText = text.substr(0, mDisplayIndex);
+			}
+			Surface = AssetManager::Instance()->GetTextSurface(tempText, filename, size, color, managed);
+			Data = Surface->pixels;
 		}
 
 		if (Surface != nullptr) {
@@ -185,6 +185,7 @@ namespace SDLFramework {
 	void GLTexture::Render() {
 		UpdateDstRect();
 
+		//Apply typing effect while word has not been fully created (if we are using it)
 		if (mTypingEffect && !mTextFullyDisplayed) {
 			SetSurfaceTypingTextTexture(mTypingText, mTypingFont, mTypingSize, mTypingColor, mTypingManaged, mTypingEffect, mTextDelay);
 		}

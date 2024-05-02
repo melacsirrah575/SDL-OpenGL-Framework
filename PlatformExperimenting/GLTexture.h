@@ -24,7 +24,7 @@ namespace SDLFramework {
 
 		unsigned int mDisplayIndex;
 		unsigned int mLastDisplayTime;
-		unsigned int mTextDelay;
+		unsigned int mTextDelay;	//This is in milliseconds!
 
 		std::string mTypingText;
 		std::string mTypingFont;
@@ -39,7 +39,6 @@ namespace SDLFramework {
 
 		void Generate();
 		void Bind();
-		void UpdateTypingEffect();
 
 		void SetSurfaceTexture(std::string filename, bool managed = false);
 		void SetSurfaceTextTexture(std::string text, std::string filename, int size, SDL_Color color, bool managed = false);
