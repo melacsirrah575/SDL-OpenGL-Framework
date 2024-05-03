@@ -132,7 +132,7 @@ namespace SDLFramework {
 		}
 	}
 
-	void GLTexture::SetSurfaceTypingTextTexture(std::string text, std::string filename, int size, SDL_Color color, bool managed,
+	void GLTexture::UpdateTypingEffect(std::string text, std::string filename, int size, SDL_Color color, bool managed,
 		bool typingEffect, unsigned int textDelay) {
 
 		unsigned int currentTime = SDL_GetTicks();
@@ -187,7 +187,7 @@ namespace SDLFramework {
 
 		//Apply typing effect while word has not been fully created (if we are using it)
 		if (mTypingEffect && !mTextFullyDisplayed) {
-			SetSurfaceTypingTextTexture(mTypingText, mTypingFont, mTypingSize, mTypingColor, mTypingManaged, mTypingEffect, mTextDelay);
+			UpdateTypingEffect(mTypingText, mTypingFont, mTypingSize, mTypingColor, mTypingManaged, mTypingEffect, mTextDelay);
 		}
 
 		GLGraphics::Instance()->DrawSprite(this, mClipped ? &mSourceRect : nullptr, &mDestinationRect, Rotation(World), Flip);

@@ -19,6 +19,8 @@ namespace SDLFramework {
 		SDL_RendererFlip Flip;
 		SDL_Surface* Surface;
 
+	private:
+
 		bool mTypingEffect;
 		bool mTextFullyDisplayed;
 
@@ -32,6 +34,7 @@ namespace SDLFramework {
 		SDL_Color mTypingColor;
 		bool mTypingManaged;
 
+	public:
 		GLTexture(std::string filename, bool managed = false);
 		GLTexture(std::string filename, int x, int y, int w, int h, bool managed = false);
 		GLTexture(std::string text, std::string fontPath, int size, SDL_Color color, bool managed = false, bool typingEffect = false, unsigned int textDelay = 0);
@@ -42,7 +45,7 @@ namespace SDLFramework {
 
 		void SetSurfaceTexture(std::string filename, bool managed = false);
 		void SetSurfaceTextTexture(std::string text, std::string filename, int size, SDL_Color color, bool managed = false);
-		void SetSurfaceTypingTextTexture(std::string text, std::string filename, int size, SDL_Color color, bool managed,
+		void UpdateTypingEffect(std::string text, std::string filename, int size, SDL_Color color, bool managed,
 			bool typingEffect, unsigned int textDelay);
 
 		// Inherited from Texture
