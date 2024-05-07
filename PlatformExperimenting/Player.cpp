@@ -18,7 +18,7 @@ void Player::HandleMovement() {
 	//	Translate(Vec2_Up * mMoveSpeed * mTimer->DeltaTime(), World);
 	//}
 
-	if (mInput->KeyPressed(SDL_SCANCODE_SPACE)) {
+	if (mInput->KeyPressed(SDL_SCANCODE_SPACE) && mGrounded) {
 		mPlayerJumped = true;
 		mGrounded = false;
 		mJumpTime = 0.0f;
@@ -163,9 +163,6 @@ bool Player::WasHit() {
 }
 
 void Player::Update() {
-	if (!GetIsColliding() && mGrounded) {
-		mGrounded = false;
-	}
 
 	HandleMovement();
 }
