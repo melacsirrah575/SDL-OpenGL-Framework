@@ -10,7 +10,7 @@ private:
 	Texture* mPlatformTexture;
 
 public:
-	Platform(bool canBeStoodOn);
+	Platform(bool canBeStoodOn, Vector2 boxCollider, Vector2 Position, Vector2 colliderOffset = Vec2_Zero);
 	~Platform();
 
 	// Inherited from PhysEntity

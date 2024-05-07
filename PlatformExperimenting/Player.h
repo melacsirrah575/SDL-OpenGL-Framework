@@ -4,6 +4,7 @@
 #include "AudioManager.h"
 #include "InputManager.h"
 #include "PhysEntity.h"
+#include "PlatformManager.h"
 
 using namespace SDLFramework;
 
@@ -12,6 +13,7 @@ private:
 	Timer * mTimer;
 	InputManager * mInput;
 	AudioManager * mAudio;
+	PlatformManager* mPlatforms;
 
 	bool mVisible;
 	bool mAnimating;

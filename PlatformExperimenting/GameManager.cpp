@@ -65,6 +65,7 @@ namespace SDLFramework {
 		mAssetManager = AssetManager::Instance();
 		mInputManager = InputManager::Instance();
 		mAudioManager = AudioManager::Instance();
+		mPlatformManager = PlatformManager::Instance();
 
 		mPhysicsManager = PhysicsManager::Instance();
 		mPhysicsManager->SetLayerCollisionMask(PhysicsManager::CollisionLayers::Friendly, PhysicsManager::CollisionFlags::Hostile | PhysicsManager::CollisionFlags::HostileProjectiles | PhysicsManager::CollisionFlags::Platforms);

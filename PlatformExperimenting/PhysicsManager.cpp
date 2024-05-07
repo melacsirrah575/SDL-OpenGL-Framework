@@ -52,8 +52,8 @@ void PhysicsManager::Update() {
 							mCollisionLayers[j][l]->SetIsColliding(true);
 						}
 						else {
-							mCollisionLayers[i][k]->SetIsColliding(false);
-							mCollisionLayers[j][l]->SetIsColliding(false);
+							//mCollisionLayers[i][k]->SetIsColliding(false);
+							//mCollisionLayers[j][l]->SetIsColliding(false);
 						}
 					}
 				}

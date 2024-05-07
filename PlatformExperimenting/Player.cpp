@@ -2,6 +2,7 @@
 #include "BoxCollider.h"
 #include "PhysicsManager.h"
 #include "Platform.h"
+#include <sstream>
 
 void Player::HandleMovement() {
 	if (mInput->KeyDown(SDL_SCANCODE_RIGHT) || mInput->KeyDown(SDL_SCANCODE_D)) {
@@ -30,7 +31,10 @@ void Player::HandleMovement() {
 			Translate(-Vec2_Up * mMoveSpeed * mTimer->DeltaTime(), World);
 		}
 		else {
-			if (mGrounded) return;
+			if (mGrounded) {
+				mPlayerJumped = false;
+				return;
+			}
 			Translate(Vec2_Up * mMoveSpeed * mTimer->DeltaTime(), World);
 		}
 
@@ -38,13 +42,15 @@ void Player::HandleMovement() {
 
 		if (mJumpTime >= mJumpSpeed) {
 			mPlayerJumped = false;
-			mGrounded = true;
 		}
 	}
 
 	//std::cout << "mGrounded: " << mGrounded << std::endl;
 
 	if (!mGrounded && !mPlayerJumped) {
+		Translate(Vec2_Up * mMoveSpeed * mTimer->DeltaTime(), World);
+	}
+	else if (!mIsColliding && !mPlayerJumped) {
 		Translate(Vec2_Up * mMoveSpeed * mTimer->DeltaTime(), World);
 	}
 
@@ -71,6 +77,7 @@ Player::Player() {
 	mTimer = Timer::Instance();
 	mInput = InputManager::Instance();
 	mAudio = AudioManager::Instance();
+	mPlatforms = PlatformManager::Instance();
 
 	mVisible = false;
 	mAnimating = false;
@@ -135,26 +142,22 @@ void Player::AddScore(int change) {
 
 void Player::Hit(PhysEntity * other) {
 	//mLives -= 1;
-	std::cout << "Hit!" << std::endl;
-	if (other->GetName() == "Platform") {
-		std::cout << "Platform hit!" << std::endl;
-		//If Platform is Standable && Player's Y Pos is greater than Platform's Y Pos
-		Platform testPlatform = other;
+	if (other->GetName() == mPlatforms->GetPlatform(other->GetId())->GetName()) {
+		std::cout << "Platform Position: " << mPlatforms->GetPlatformPosition(other->GetId()).x << ", " << mPlatforms->GetPlatformPosition(other->GetId()).y << std::endl;
+		std::cout << "Player Position: " << Position().x << ", " << Position().y << std::endl;
 		//USING 67.0f / 2 BECAUSE I DON'T HAVE A TEXTURE AND THE COLLIDER IS 67
-		if (testPlatform.GetCanBeStoodOn() && Position().y + (67.0f / 2) >= other->Position().y) {
+		//TODO: Update with ScaledDimensions of Texture when Player Texture is implemented.
+		if (mPlatforms->GetPlatform(other->GetId())->GetCanBeStoodOn() && Position().y + (67.0f / 2) >= mPlatforms->GetPlatformPosition(other->GetId()).y) {
 			//USING 75 BECAUSE I DON'T HAVE A TEXTURE AND THE COLLIDER IS 150
-			if (Position().x >= other->Position().x - 75 &&
-				Position().x <= other->Position().x + 75) {
-				mGrounded = true;
-				//std::cout << "mGrounded: " << mGrounded << std::endl;
+			//TODO: Update with ScaledDimensions of Texture when Platform Texture is implemented.
+			if (Position().x >= mPlatforms->GetPlatformPosition(other->GetId()).x - 75 &&
+				Position().x <= mPlatforms->GetPlatformPosition(other->GetId()).x + 75) {
+ 				mGrounded = true;
 			}
-		} 
+		}
 		else {
 			mGrounded = false;
-			//std::cout << "mGrounded: " << mGrounded << std::endl;
 		}
-		//else
-			//Player's Y moveBounds go back to default
 	}
 }
 

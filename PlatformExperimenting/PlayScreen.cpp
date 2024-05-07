@@ -10,14 +10,16 @@ void PlayScreen::StartNextLevel() {
 PlayScreen::PlayScreen() {
 	mTimer = Timer::Instance();
 	mAudio = AudioManager::Instance();
+	mPlatforms = PlatformManager::Instance();
 
 	mLevel = nullptr;
 	mLevelStarted = false;
 
 	mPlayer = nullptr;
-	mMiddlePlatform = new Platform(true);
-	mMiddlePlatform->Parent(this);
-	mMiddlePlatform->Position(Graphics::SCREEN_WIDTH * 0.5, Graphics::SCREEN_HEIGHT * 0.7f);
+
+	mPlatforms->CreateNewPlatform(true, Vector2(160, 16), Vector2(Graphics::SCREEN_WIDTH * 0.5, Graphics::SCREEN_HEIGHT * 0.7f));
+	mPlatforms->CreateNewPlatform(true, Vector2(160, 16), Vector2(Graphics::SCREEN_WIDTH * 0.3, Graphics::SCREEN_HEIGHT * 0.6f));
+
 }
 
 PlayScreen::~PlayScreen() {
@@ -69,7 +71,8 @@ void PlayScreen::Update() {
 		}
 
 		mPlayer->Update();
-		mMiddlePlatform->Update();
+		mPlatforms->Update();
+		//mMiddlePlatform->Update();
 	}
 }
 
@@ -82,6 +85,7 @@ void PlayScreen::Render() {
 		}
 
 		mPlayer->Render();
-		mMiddlePlatform->Render();
+		mPlatforms->Render();
+		//mMiddlePlatform->Render();
 	}
 }
