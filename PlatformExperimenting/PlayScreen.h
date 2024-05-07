@@ -1,6 +1,7 @@
 #ifndef __PLAYSCREEN_H
 #define __PLAYSCREEN_H
 #include "Level.h"
+#include "Platform.h"
 
 class PlayScreen : public GameEntity {
 private:
@@ -13,6 +14,7 @@ private:
 	bool mLevelStarted;
 
 	Player * mPlayer;
+	Platform* mMiddlePlatform;
 
 private:
 	void StartNextLevel();

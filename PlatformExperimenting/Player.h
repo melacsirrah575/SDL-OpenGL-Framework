@@ -17,6 +17,7 @@ private:
 	bool mAnimating;
 	bool mWasHit;
 	bool mPlayerJumped;
+	bool mGrounded;
 
 	int mScore;
 	int mLives;
@@ -48,7 +49,6 @@ public:
 	void AddScore(int change);
 
 	// Inherited from PhysEntity
-	bool IgnoreCollisions() override;
 	void Hit(PhysEntity * other) override;
 	
 	bool WasHit();

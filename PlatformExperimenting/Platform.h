@@ -5,7 +5,6 @@ using namespace SDLFramework;
 
 class Platform : public PhysEntity {
 private:
-	bool mWasHit;
 	bool mCanBeStoodOn;
 
 	Texture* mPlatformTexture;
@@ -15,10 +14,8 @@ public:
 	~Platform();
 
 	// Inherited from PhysEntity
-	bool IgnoreCollisions() override;
 	void Hit(PhysEntity* other) override;
 
-	bool WasHit();
 	bool GetCanBeStoodOn();
 
 	void Update() override;

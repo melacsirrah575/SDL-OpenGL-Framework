@@ -15,6 +15,9 @@ PlayScreen::PlayScreen() {
 	mLevelStarted = false;
 
 	mPlayer = nullptr;
+	mMiddlePlatform = new Platform(true);
+	mMiddlePlatform->Parent(this);
+	mMiddlePlatform->Position(Graphics::SCREEN_WIDTH * 0.5, Graphics::SCREEN_HEIGHT * 0.7f);
 }
 
 PlayScreen::~PlayScreen() {
@@ -66,6 +69,7 @@ void PlayScreen::Update() {
 		}
 
 		mPlayer->Update();
+		mMiddlePlatform->Update();
 	}
 }
 
@@ -78,5 +82,6 @@ void PlayScreen::Render() {
 		}
 
 		mPlayer->Render();
+		mMiddlePlatform->Render();
 	}
 }

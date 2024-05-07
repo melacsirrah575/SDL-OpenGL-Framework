@@ -47,6 +47,13 @@ void PhysicsManager::Update() {
 						if (mCollisionLayers[i][k]->CheckCollision(mCollisionLayers[j][l])) {
 							mCollisionLayers[i][k]->Hit(mCollisionLayers[j][l]);
 							mCollisionLayers[j][l]->Hit(mCollisionLayers[i][k]);
+							
+							mCollisionLayers[i][k]->SetIsColliding(true);
+							mCollisionLayers[j][l]->SetIsColliding(true);
+						}
+						else {
+							mCollisionLayers[i][k]->SetIsColliding(false);
+							mCollisionLayers[j][l]->SetIsColliding(false);
 						}
 					}
 				}

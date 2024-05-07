@@ -52,6 +52,10 @@ unsigned long PhysEntity::GetId() {
 	return mId;
 }
 
+std::string PhysEntity::GetName() {
+	return mName;
+}
+
 bool PhysEntity::CheckCollision(PhysEntity * other) {
 	if (IgnoreCollisions() || other->IgnoreCollisions()) {
 		return false;

@@ -1,6 +1,7 @@
 #include "Player.h"
 #include "BoxCollider.h"
 #include "PhysicsManager.h"
+#include "Platform.h"
 
 void Player::HandleMovement() {
 	if (mInput->KeyDown(SDL_SCANCODE_RIGHT) || mInput->KeyDown(SDL_SCANCODE_D)) {
@@ -19,14 +20,17 @@ void Player::HandleMovement() {
 
 	if (mInput->KeyPressed(SDL_SCANCODE_SPACE)) {
 		mPlayerJumped = true;
+		mGrounded = false;
 		mJumpTime = 0.0f;
 	}
 
 	if (mPlayerJumped) {
 		if (mJumpTime < 0.5f * mJumpSpeed) {
+			//std::cout << "mGrounded: " << mGrounded << std::endl;
 			Translate(-Vec2_Up * mMoveSpeed * mTimer->DeltaTime(), World);
 		}
 		else {
+			if (mGrounded) return;
 			Translate(Vec2_Up * mMoveSpeed * mTimer->DeltaTime(), World);
 		}
 
@@ -34,7 +38,14 @@ void Player::HandleMovement() {
 
 		if (mJumpTime >= mJumpSpeed) {
 			mPlayerJumped = false;
+			mGrounded = true;
 		}
+	}
+
+	//std::cout << "mGrounded: " << mGrounded << std::endl;
+
+	if (!mGrounded && !mPlayerJumped) {
+		Translate(Vec2_Up * mMoveSpeed * mTimer->DeltaTime(), World);
 	}
 
 	Vector2 pos = Position(Local);
@@ -49,6 +60,7 @@ void Player::HandleMovement() {
 	}
 	else if (pos.y > mYMoveBounds.y) {
 		pos.y = mYMoveBounds.y;
+		mGrounded = true;
 	}
 
 	Position(pos);
@@ -64,6 +76,7 @@ Player::Player() {
 	mAnimating = false;
 	mWasHit = false;
 	mPlayerJumped = false;
+	mGrounded = true;
 
 	mScore = 0;
 	mLives = 2;
@@ -77,13 +90,15 @@ Player::Player() {
 	mJumpTime = 0.0f;
 
 	mXMoveBounds = Vector2(0.0f, Graphics::SCREEN_WIDTH);
-	mYMoveBounds = Vector2(100.0f, Graphics::SCREEN_HEIGHT);
+	//PAIRING BOTTOM Y BOUNDS WITH PLAYER POSITION IN PLAYSCREEN!!
+	mYMoveBounds = Vector2(100.0f, Graphics::SCREEN_HEIGHT * 0.8f);
 
 	mDeathAnimation = nullptr;
 
 	AddCollider(new BoxCollider(Vector2(16.0f, 67.0f)));
 
 	mId = PhysicsManager::Instance()->RegisterEntity(this, PhysicsManager::CollisionLayers::Friendly);
+	mName = "Player";
 }
 
 Player::~Player() {
@@ -118,14 +133,29 @@ void Player::AddScore(int change) {
 	mScore += change;
 }
 
-bool Player::IgnoreCollisions()
-{
-	return !mVisible || mAnimating;
-}
-
 void Player::Hit(PhysEntity * other) {
-	mLives -= 1;
-	mWasHit = true;
+	//mLives -= 1;
+	std::cout << "Hit!" << std::endl;
+	if (other->GetName() == "Platform") {
+		std::cout << "Platform hit!" << std::endl;
+		//If Platform is Standable && Player's Y Pos is greater than Platform's Y Pos
+		Platform testPlatform = other;
+		//USING 67.0f / 2 BECAUSE I DON'T HAVE A TEXTURE AND THE COLLIDER IS 67
+		if (testPlatform.GetCanBeStoodOn() && Position().y + (67.0f / 2) >= other->Position().y) {
+			//USING 75 BECAUSE I DON'T HAVE A TEXTURE AND THE COLLIDER IS 150
+			if (Position().x >= other->Position().x - 75 &&
+				Position().x <= other->Position().x + 75) {
+				mGrounded = true;
+				//std::cout << "mGrounded: " << mGrounded << std::endl;
+			}
+		} 
+		else {
+			mGrounded = false;
+			//std::cout << "mGrounded: " << mGrounded << std::endl;
+		}
+		//else
+			//Player's Y moveBounds go back to default
+	}
 }
 
 bool Player::WasHit() {
@@ -133,6 +163,9 @@ bool Player::WasHit() {
 }
 
 void Player::Update() {
+	if (!GetIsColliding() && mGrounded) {
+		mGrounded = false;
+	}
 
 	HandleMovement();
 }
