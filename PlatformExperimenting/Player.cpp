@@ -105,7 +105,7 @@ Player::Player() {
 
 	mDeathAnimation = nullptr;
 
-	AddCollider(new BoxCollider(Vector2(16.0f, 67.0f)));
+	AddCollider(new BoxCollider(Vector2(mPlayerTexture->ScaledDimensions().x, mPlayerTexture->ScaledDimensions().y)));
 
 	mId = PhysicsManager::Instance()->RegisterEntity(this, PhysicsManager::CollisionLayers::Friendly);
 	mName = "Player";

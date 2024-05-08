@@ -2,7 +2,7 @@
 #include "BoxCollider.h"
 #include "PhysicsManager.h"
 
-Platform::Platform(bool canBeStoodOn, Vector2 boxCollider, Vector2 position, Vector2 scale, Vector2 colliderOffset) :
+Platform::Platform(bool canBeStoodOn, Vector2 position, Vector2 scale, Vector2 colliderOffset) :
 	mCanBeStoodOn(canBeStoodOn) {
 
 	//TODO: Assign this with a Texture if we want an image!
@@ -14,7 +14,7 @@ Platform::Platform(bool canBeStoodOn, Vector2 boxCollider, Vector2 position, Vec
 	}
 
 	Position(position);
-	AddCollider(new BoxCollider(boxCollider), colliderOffset);
+	AddCollider(new BoxCollider(Vector2(mPlatformTexture->ScaledDimensions().x, mPlatformTexture->ScaledDimensions().y)), colliderOffset);
 
 	mId = PhysicsManager::Instance()->RegisterEntity(this, PhysicsManager::CollisionLayers::Platforms);
 	mName = "Platform";
