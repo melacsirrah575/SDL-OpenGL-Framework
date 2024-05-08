@@ -4,6 +4,7 @@
 #include "AudioManager.h"
 #include "InputManager.h"
 #include "PhysEntity.h"
+#include "PlatformManager.h"
 
 using namespace SDLFramework;
 
@@ -12,11 +13,13 @@ private:
 	Timer * mTimer;
 	InputManager * mInput;
 	AudioManager * mAudio;
+	PlatformManager* mPlatforms;
 
 	bool mVisible;
 	bool mAnimating;
 	bool mWasHit;
 	bool mPlayerJumped;
+	bool mGrounded;
 
 	int mScore;
 	int mLives;
@@ -48,7 +51,6 @@ public:
 	void AddScore(int change);
 
 	// Inherited from PhysEntity
-	bool IgnoreCollisions() override;
 	void Hit(PhysEntity * other) override;
 	
 	bool WasHit();

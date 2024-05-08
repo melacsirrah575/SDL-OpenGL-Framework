@@ -179,7 +179,7 @@ namespace SDLFramework {
 			}
 
 			SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
-			glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+			glClearColor(0.0f, 0.5f, 0.0f, 1.0f);
 			glEnable(GL_TEXTURE_2D);
 		}
 		break;

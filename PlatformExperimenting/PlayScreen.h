@@ -1,11 +1,13 @@
 #ifndef __PLAYSCREEN_H
 #define __PLAYSCREEN_H
 #include "Level.h"
+#include "PlatformManager.h"
 
 class PlayScreen : public GameEntity {
 private:
 	Timer * mTimer;
 	AudioManager * mAudio;
+	PlatformManager* mPlatforms;
 
 	bool mGameStarted;
 
