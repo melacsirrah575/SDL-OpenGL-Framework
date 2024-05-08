@@ -47,12 +47,12 @@ void Player::HandleMovement() {
 
 	//std::cout << "mGrounded: " << mGrounded << std::endl;
 
-	if (!mGrounded && !mPlayerJumped) {
+	if ((!mGrounded || !mIsColliding) && !mPlayerJumped) {
 		Translate(Vec2_Up * mMoveSpeed * mTimer->DeltaTime(), World);
 	}
-	else if (!mIsColliding && !mPlayerJumped) {
-		Translate(Vec2_Up * mMoveSpeed * mTimer->DeltaTime(), World);
-	}
+	//else if (!mIsColliding && !mPlayerJumped) {
+	//	Translate(Vec2_Up * mMoveSpeed * mTimer->DeltaTime(), World);
+	//}
 
 	Vector2 pos = Position(Local);
 	if (pos.x < mXMoveBounds.x) {
@@ -88,7 +88,10 @@ Player::Player() {
 	mScore = 0;
 	mLives = 2;
 	
-	mPlayerTexture = nullptr;
+	mPlayerTexture = new GLTexture("Black.png");
+	mPlayerTexture->Parent(this);
+	mPlayerTexture->Position(Vec2_Zero);
+	mPlayerTexture->Scale(Vector2(0.2f, 0.6f));
 
 	mMoveSpeed = 300.0f;
 	mJumpSpeed = 300.0f;
@@ -98,7 +101,7 @@ Player::Player() {
 
 	mXMoveBounds = Vector2(0.0f, Graphics::SCREEN_WIDTH);
 	//PAIRING BOTTOM Y BOUNDS WITH PLAYER POSITION IN PLAYSCREEN!!
-	mYMoveBounds = Vector2(100.0f, Graphics::SCREEN_HEIGHT * 0.8f);
+	mYMoveBounds = Vector2(100.0f, Graphics::SCREEN_HEIGHT);
 
 	mDeathAnimation = nullptr;
 
@@ -143,15 +146,13 @@ void Player::AddScore(int change) {
 void Player::Hit(PhysEntity * other) {
 	//mLives -= 1;
 	if (other->GetName() == mPlatforms->GetPlatform(other->GetId())->GetName()) {
-		std::cout << "Platform Position: " << mPlatforms->GetPlatformPosition(other->GetId()).x << ", " << mPlatforms->GetPlatformPosition(other->GetId()).y << std::endl;
-		std::cout << "Player Position: " << Position().x << ", " << Position().y << std::endl;
 		//USING 67.0f / 2 BECAUSE I DON'T HAVE A TEXTURE AND THE COLLIDER IS 67
 		//TODO: Update with ScaledDimensions of Texture when Player Texture is implemented.
-		if (mPlatforms->GetPlatform(other->GetId())->GetCanBeStoodOn() && Position().y + (67.0f / 2) >= mPlatforms->GetPlatformPosition(other->GetId()).y) {
+		if (mPlatforms->GetPlatform(other->GetId())->GetCanBeStoodOn() && Position().y + mPlayerTexture->ScaledDimensions().y >= mPlatforms->GetPlatformPosition(other->GetId()).y) {
 			//USING 75 BECAUSE I DON'T HAVE A TEXTURE AND THE COLLIDER IS 150
 			//TODO: Update with ScaledDimensions of Texture when Platform Texture is implemented.
-			if (Position().x >= mPlatforms->GetPlatformPosition(other->GetId()).x - 75 &&
-				Position().x <= mPlatforms->GetPlatformPosition(other->GetId()).x + 75) {
+			if (Position().x >= mPlatforms->GetPlatformPosition(other->GetId()).x - mPlatforms->GetPlatform(other->GetId())->GetTexture()->ScaledDimensions().x / 2 &&
+				Position().x <= mPlatforms->GetPlatformPosition(other->GetId()).x + mPlatforms->GetPlatform(other->GetId())->GetTexture()->ScaledDimensions().x / 2) {
  				mGrounded = true;
 			}
 		}
@@ -173,8 +174,9 @@ void Player::Update() {
 void Player::Render() {
 	if (mVisible) {
 		//Cannot currently render because texture is a nullptr!
-		//mPlayerTexture->Render();
 	}
+	mPlayerTexture->Render();
+
 
 	PhysEntity::Render();
 }
