@@ -70,6 +70,8 @@ void Player::HandleMovement() {
 	}
 
 	Position(pos);
+	std::cout << "Player Position: " << Position().x << ", " << Position().y << std::endl;
+	Graphics::Instance()->SetCameraPosition(Position().x, Position().y);
 }
 
 

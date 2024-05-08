@@ -46,6 +46,12 @@ namespace SDLFramework {
 		return sInitialized;
 	}
 
+	void Graphics::SetCameraPosition(float x, float y) {
+		mCameraX = x;
+		mCameraY = y;
+		std::cout << "Camera Position: " << mCameraX << ", " << mCameraY << std::endl;
+	}
+
 	SDL_Texture* Graphics::LoadTexture(std::string path) {
 		if (mRenderer == nullptr) return nullptr;
 		
@@ -108,14 +114,31 @@ namespace SDLFramework {
 	}
 
 	void Graphics::DrawTexture(SDL_Texture* tex, SDL_Rect* srcRect, SDL_Rect* dstRect, float angle, SDL_RendererFlip flip) {
-		SDL_RenderCopyEx(mRenderer, tex, srcRect, dstRect, angle, nullptr, flip);
+		// Apply camera transformation
+		if (mCameraX != 0.0f || mCameraY != 0.0f) {
+			SDL_Rect adjustedDstRect = *dstRect;
+			adjustedDstRect.x -= static_cast<int>(mCameraX);
+			adjustedDstRect.y -= static_cast<int>(mCameraY);
+			SDL_RenderCopyEx(mRenderer, tex, srcRect, &adjustedDstRect, angle, nullptr, flip);
+		}
+		else {
+			SDL_RenderCopyEx(mRenderer, tex, srcRect, dstRect, angle, nullptr, flip);
+		}
 	}
 
 	void Graphics::DrawLine(float startX, float startY, float endX, float endY) {
 		SDL_Color color;
 		SDL_GetRenderDrawColor(mRenderer, &color.r, &color.g, &color.b, &color.a);
 		SDL_SetRenderDrawColor(mRenderer, 255, 255, 255, SDL_ALPHA_OPAQUE);
-		SDL_RenderDrawLine(mRenderer, (int)startX, (int)startY, (int)endX, (int)endY);
+
+		if (mCameraX != 0.0f || mCameraY != 0.0f) {
+			startX -= mCameraX;
+			startY -= mCameraY;
+			endX -= mCameraX;
+			endY -= mCameraY;
+		}
+
+		SDL_RenderDrawLine(mRenderer, static_cast<int>(startX), static_cast<int>(startY), static_cast<int>(endX), static_cast<int>(endY));
 		SDL_SetRenderDrawColor(mRenderer, color.r, color.g, color.b, color.a);
 	}
 
@@ -127,7 +150,7 @@ namespace SDLFramework {
 	}
 
 	//private member functions
-	Graphics::Graphics() : mRenderer(nullptr) {
+	Graphics::Graphics() : mRenderer(nullptr), mCameraX(0.0f), mCameraY(0.0f) {
 		sInitialized = Init();
 	}
 
@@ -158,6 +181,7 @@ namespace SDLFramework {
 
 		switch (sMode) {
 		case RenderMode::SDL:
+			std::cout << "Using SDL" << std::endl;
 			mRenderer = SDL_CreateRenderer(mWindow, -1, SDL_RENDERER_ACCELERATED);
 			if (mRenderer == nullptr) {
 				std::cerr << "Unable to create renderer! SDL Error: " << SDL_GetError() << std::endl;
@@ -166,6 +190,7 @@ namespace SDLFramework {
 			break;
 		case RenderMode::GL:
 		{
+			std::cout << "Using OpenGL" << std::endl;
 			mGLContext = SDL_GL_CreateContext(mWindow);
 			if (mGLContext == nullptr) {
 				std::cerr << "Unable to create GL context! SDL Error: " << SDL_GetError() << std::endl;
