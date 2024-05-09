@@ -11,6 +11,11 @@ namespace SDLFramework {
 		float rad = angle * DEG_TO_RAD;
 		Vector2 pos = texture->Position(GameEntity::Space::World);
 
+		
+
+		pos.x -= mCameraX;
+		pos.y -= mCameraY;
+
 		InitRenderData(texture, srcRect, texture->ID);
 
 		shaderUtil.Use();

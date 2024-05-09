@@ -49,7 +49,7 @@ namespace SDLFramework {
 	void Graphics::SetCameraPosition(float x, float y) {
 		mCameraX = x;
 		mCameraY = y;
-		std::cout << "Camera Position: " << mCameraX << ", " << mCameraY << std::endl;
+		//std::cout << "Camera Position: " << mCameraX << ", " << mCameraY << std::endl;
 	}
 
 	SDL_Texture* Graphics::LoadTexture(std::string path) {

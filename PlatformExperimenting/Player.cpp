@@ -55,23 +55,26 @@ void Player::HandleMovement() {
 	//}
 
 	Vector2 pos = Position(Local);
-	if (pos.x < mXMoveBounds.x) {
+	if (pos.x <= mXMoveBounds.x) {
 		pos.x = mXMoveBounds.x;
+		Graphics::Instance()->SetCameraPosition(
+			Graphics::Instance()->GetCameraX() - mMoveSpeed * mTimer->DeltaTime(),
+			Graphics::Instance()->GetCameraY());
 	}
-	else if (pos.x > mXMoveBounds.y) {
+	else if (pos.x >= mXMoveBounds.y) {
 		pos.x = mXMoveBounds.y;
 	}
-	if (pos.y < mYMoveBounds.x) {
+	if (pos.y <= mYMoveBounds.x) {
 		pos.y = mYMoveBounds.x;
 	}
-	else if (pos.y > mYMoveBounds.y) {
+	else if (pos.y >= mYMoveBounds.y) {
 		pos.y = mYMoveBounds.y;
 		mGrounded = true;
 	}
 
 	Position(pos);
-	std::cout << "Player Position: " << Position().x << ", " << Position().y << std::endl;
-	Graphics::Instance()->SetCameraPosition(Position().x, Position().y);
+	//std::cout << "Player Position: " << Position().x << ", " << Position().y << std::endl;
+	//Graphics::Instance()->SetCameraPosition(Position().x, Position().y);
 }
 
 
