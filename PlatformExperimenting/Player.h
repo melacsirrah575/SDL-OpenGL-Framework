@@ -31,9 +31,11 @@ private:
 	float mJumpHeight;
 	float mJumpSpeed;
 	float mJumpTime;
+	float mXOffset;
+	float mYOffset;
 
-	Vector2 mXMoveBounds;
-	Vector2 mYMoveBounds;
+	Vector2 mXScrollBoundryOffset;
+	Vector2 mYScrollBoundryOffset;
 
 private:
 	void HandleMovement();
