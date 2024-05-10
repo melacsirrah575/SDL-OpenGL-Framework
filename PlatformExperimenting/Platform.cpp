@@ -2,11 +2,10 @@
 #include "BoxCollider.h"
 #include "PhysicsManager.h"
 
-Platform::Platform(bool canBeStoodOn, Vector2 position, Vector2 scale, Vector2 colliderOffset) :
+Platform::Platform(bool canBeStoodOn, Vector2 position, GLTexture* texture, Vector2 scale, Vector2 colliderOffset) :
 	mCanBeStoodOn(canBeStoodOn) {
 
-	//TODO: Assign this with a Texture if we want an image!
-	mPlatformTexture = new GLTexture("Black.png");
+	mPlatformTexture = texture;
 	if (mPlatformTexture != nullptr) {
 		mPlatformTexture->Parent(this);
 		mPlatformTexture->Position(Vec2_Zero);

@@ -27,7 +27,6 @@ void Player::HandleMovement() {
 
 	if (mPlayerJumped) {
 		if (mJumpTime < 0.5f * mJumpSpeed) {
-			//std::cout << "mGrounded: " << mGrounded << std::endl;
 			Translate(-Vec2_Up * mMoveSpeed * mTimer->DeltaTime(), World);
 		}
 		else {
@@ -45,14 +44,9 @@ void Player::HandleMovement() {
 		}
 	}
 
-	//std::cout << "mGrounded: " << mGrounded << std::endl;
-
 	if ((!mGrounded || !mIsColliding) && !mPlayerJumped) {
 		Translate(Vec2_Up * mMoveSpeed * mTimer->DeltaTime(), World);
 	}
-	//else if (!mIsColliding && !mPlayerJumped) {
-	//	Translate(Vec2_Up * mMoveSpeed * mTimer->DeltaTime(), World);
-	//}
 
 	Vector2 pos = Position(Local);
 	if (pos.x <= mXMoveBounds.x) {
@@ -105,7 +99,6 @@ Player::Player() {
 	mJumpTime = 0.0f;
 
 	mXMoveBounds = Vector2(0.0f, Graphics::SCREEN_WIDTH);
-	//PAIRING BOTTOM Y BOUNDS WITH PLAYER POSITION IN PLAYSCREEN!!
 	mYMoveBounds = Vector2(100.0f, Graphics::SCREEN_HEIGHT);
 
 	mDeathAnimation = nullptr;
@@ -149,13 +142,8 @@ void Player::AddScore(int change) {
 }
 
 void Player::Hit(PhysEntity * other) {
-	//mLives -= 1;
 	if (other->GetName() == mPlatforms->GetPlatform(other->GetId())->GetName()) {
-		//USING 67.0f / 2 BECAUSE I DON'T HAVE A TEXTURE AND THE COLLIDER IS 67
-		//TODO: Update with ScaledDimensions of Texture when Player Texture is implemented.
 		if (mPlatforms->GetPlatform(other->GetId())->GetCanBeStoodOn() && Position().y + mPlayerTexture->ScaledDimensions().y >= mPlatforms->GetPlatformPosition(other->GetId()).y) {
-			//USING 75 BECAUSE I DON'T HAVE A TEXTURE AND THE COLLIDER IS 150
-			//TODO: Update with ScaledDimensions of Texture when Platform Texture is implemented.
 			if (Position().x >= mPlatforms->GetPlatformPosition(other->GetId()).x - mPlatforms->GetPlatform(other->GetId())->GetTexture()->ScaledDimensions().x / 2 &&
 				Position().x <= mPlatforms->GetPlatformPosition(other->GetId()).x + mPlatforms->GetPlatform(other->GetId())->GetTexture()->ScaledDimensions().x / 2) {
  				mGrounded = true;
@@ -177,9 +165,6 @@ void Player::Update() {
 }
 
 void Player::Render() {
-	if (mVisible) {
-		//Cannot currently render because texture is a nullptr!
-	}
 	mPlayerTexture->Render();
 
 
