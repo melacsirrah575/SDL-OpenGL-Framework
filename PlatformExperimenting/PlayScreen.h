@@ -16,6 +16,8 @@ private:
 
 	Player * mPlayer;
 
+	GLTexture* mPlatformTexture;
+
 private:
 	void StartNextLevel();
 

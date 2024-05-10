@@ -16,7 +16,7 @@ public:
 	static PlatformManager* Instance();
 	static void Release();
 
-	void CreateNewPlatform(bool Standable, Vector2 boxCollider, Vector2 position, Vector2 boxColliderOffset = Vec2_Zero);
+	void CreateNewPlatform(bool Standable, Vector2 position, GLTexture* texture, Vector2 scale, Vector2 boxColliderOffset = Vec2_Zero);
 	void AddPlatformToMap(Platform* platformToAdd);
 	
 	Platform* GetPlatform(unsigned long ID);

@@ -10,7 +10,7 @@ private:
 	Texture* mPlatformTexture;
 
 public:
-	Platform(bool canBeStoodOn, Vector2 Position, 
+	Platform(bool canBeStoodOn, Vector2 Position, GLTexture* texture,
 		Vector2 scale = Vector2(1.0f, 1.0f), Vector2 colliderOffset = Vec2_Zero);
 	~Platform();
 

@@ -46,8 +46,8 @@ Vector2 PlatformManager::GetPlatformPosition(unsigned long ID) {
 	}
 }
 
-void PlatformManager::CreateNewPlatform(bool standable, Vector2 boxCollider, Vector2 position, Vector2 boxColliderOffset) {
-	Platform* platform = new Platform(standable, boxCollider, position, boxColliderOffset);
+void PlatformManager::CreateNewPlatform(bool standable, Vector2 position, GLTexture* texture, Vector2 scale , Vector2 boxColliderOffset) {
+	Platform* platform = new Platform(standable, position, texture, scale, boxColliderOffset);
 	AddPlatformToMap(platform);
 }
 
