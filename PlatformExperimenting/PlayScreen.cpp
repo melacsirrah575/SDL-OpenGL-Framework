@@ -17,9 +17,11 @@ PlayScreen::PlayScreen() {
 
 	mPlayer = nullptr;
 
-	mPlatforms->CreateNewPlatform(true, Vector2(Graphics::SCREEN_WIDTH * 0.5, Graphics::SCREEN_HEIGHT * 0.7f), Vector2(1.6f, 0.2f));
-	mPlatforms->CreateNewPlatform(true, Vector2(Graphics::SCREEN_WIDTH * 0.3, Graphics::SCREEN_HEIGHT * 0.6f), Vector2(1.6f, 0.2f));
-	mPlatforms->CreateNewPlatform(true, Vector2(Graphics::SCREEN_WIDTH * 0.5, Graphics::SCREEN_HEIGHT * 0.85), Vector2(9.0f, 0.2f));
+	mPlatformTexture = new GLTexture("Black.png");
+
+	mPlatforms->CreateNewPlatform(true, Vector2(Graphics::SCREEN_WIDTH * 0.5, Graphics::SCREEN_HEIGHT * 0.7f), mPlatformTexture, Vector2(1.6f, 0.2f));
+	mPlatforms->CreateNewPlatform(true, Vector2(Graphics::SCREEN_WIDTH * 0.3, Graphics::SCREEN_HEIGHT * 0.6f), mPlatformTexture, Vector2(1.6f, 0.2f));
+	mPlatforms->CreateNewPlatform(true, Vector2(Graphics::SCREEN_WIDTH * 0.5, Graphics::SCREEN_HEIGHT * 0.85), mPlatformTexture, Vector2(9.0f, 0.2f));
 
 }
 
