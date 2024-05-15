@@ -27,8 +27,8 @@ namespace SDLFramework {
 		}
 	}
 
-	AnimatedGLTexture::AnimatedGLTexture(std::string filename, int x, int y, int w, int h, int frameCount, float animationSpeed, Animation::Layouts layout, bool managed)
-		: GLTexture(filename, x, y, w, h, managed) {
+	AnimatedGLTexture::AnimatedGLTexture(std::string filename, int x, int y, int w, int h, int frameCount, float animationSpeed, Animation::Layouts layout, bool shouldScroll, bool managed)
+		: GLTexture(filename, x, y, w, h, shouldScroll, managed) {
 		mTimer = Timer::Instance();
 
 		mAnim.startX = x;

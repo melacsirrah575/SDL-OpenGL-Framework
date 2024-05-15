@@ -16,7 +16,7 @@ namespace SDLFramework {
 		virtual void RunAnimation();
 
 	public:
-		AnimatedGLTexture(std::string filename, int x, int y, int w, int h, int frameCount, float animationSpeed, Animation::Layouts layout, bool managed = false);
+		AnimatedGLTexture(std::string filename, int x, int y, int w, int h, int frameCount, float animationSpeed, Animation::Layouts layout, bool shouldScroll = true, bool managed = false);
 		~AnimatedGLTexture();
 
 		void SetWrapMode(Animation::WrapModes mode);
