@@ -3,8 +3,9 @@
 
 namespace SDLFramework {
 
-	GLTexture::GLTexture(std::string filename, bool managed)
+	GLTexture::GLTexture(std::string filename, bool shouldScroll, bool managed)
 		: Texture(filename, managed) { 
+		ShouldScroll = shouldScroll;
 		SetSurfaceTexture(filename, managed);
 		Data = Surface->pixels;
 		
@@ -18,8 +19,9 @@ namespace SDLFramework {
 		mHeight = Surface->h;
 	}
 
-	GLTexture::GLTexture(std::string filename, int x, int y, int w, int h, bool managed)
+	GLTexture::GLTexture(std::string filename, int x, int y, int w, int h, bool shouldScroll, bool managed)
 		: Texture(filename, x, y, w, h, managed) { 
+		ShouldScroll = shouldScroll;
 		SetSurfaceTexture(filename, managed);
 		Data = Surface->pixels;
 
@@ -30,8 +32,9 @@ namespace SDLFramework {
 		FilterMin = GL_LINEAR;
 	}
 
-	GLTexture::GLTexture(std::string text, std::string fontPath, int size, SDL_Color color, bool managed)
+	GLTexture::GLTexture(std::string text, std::string fontPath, int size, SDL_Color color, bool shouldScroll, bool managed)
 		: Texture(text, fontPath, size, color, managed) { 
+		ShouldScroll = shouldScroll;
 		SetSurfaceTextTexture(text, fontPath, size, color, managed);
 
 		WrapS = GL_CLAMP_TO_BORDER;
@@ -115,6 +118,6 @@ namespace SDLFramework {
 	void GLTexture::Render() {
 		UpdateDstRect();
 
-		GLGraphics::Instance()->DrawSprite(this, mClipped ? &mSourceRect : nullptr, &mDestinationRect, Rotation(World), Flip);
+		GLGraphics::Instance()->DrawSprite(this, mClipped ? &mSourceRect : nullptr, &mDestinationRect, Rotation(World), Flip, ShouldScroll);
 	}
 }
