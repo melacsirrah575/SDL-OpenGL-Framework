@@ -16,11 +16,9 @@ Platform::Platform(bool canBeStoodOn, bool canBeJumpedThrough, Vector2 position,
 	Position(position);
 
 	if (boxColliderSize.x == 0.0f && boxColliderSize.y == 0.0f) {
-		std::cout << "No Collider Size given! Using Texture Dimensions." << std::endl;
 		AddCollider(new BoxCollider(Vector2(mPlatformTexture->ScaledDimensions().x, mPlatformTexture->ScaledDimensions().y)), colliderOffset);
 	}
 	else {
-		std::cout << "Collider Size given! Using it!" << std::endl;
 		AddCollider(new BoxCollider(Vector2(boxColliderSize.x, boxColliderSize.y)), colliderOffset);
 	}
 
