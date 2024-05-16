@@ -7,9 +7,16 @@
 #include <gtx/transform.hpp>
 
 namespace SDLFramework {
-	void GLGraphics::DrawSprite(GLTexture* texture, SDL_Rect* srcRect, SDL_Rect* dstRect, float angle, SDL_RendererFlip flip) {
+	void GLGraphics::DrawSprite(GLTexture* texture, SDL_Rect* srcRect, SDL_Rect* dstRect, float angle, SDL_RendererFlip flip, bool shouldScroll) {
 		float rad = angle * DEG_TO_RAD;
 		Vector2 pos = texture->Position(GameEntity::Space::World);
+
+		
+		if (shouldScroll) {
+			pos.x -= mCameraX;
+			pos.y -= mCameraY;
+		}
+
 
 		InitRenderData(texture, srcRect, texture->ID);
 

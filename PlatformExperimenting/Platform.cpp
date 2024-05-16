@@ -2,6 +2,7 @@
 #include "BoxCollider.h"
 #include "PhysicsManager.h"
 
+
 Platform::Platform(bool canBeStoodOn, bool canBeJumpedThrough, Vector2 position, GLTexture* texture, Vector2 scale, Vector2 boxColliderSize, Vector2 colliderOffset) :
 	mCanBeStoodOn(canBeStoodOn), mCanBeJumpedThrough(canBeJumpedThrough) {
 

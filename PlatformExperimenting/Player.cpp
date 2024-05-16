@@ -49,18 +49,51 @@ void Player::HandleMovement() {
 	}
 
 	Vector2 pos = Position(Local);
-	if (pos.x < mXMoveBounds.x) {
-		pos.x = mXMoveBounds.x;
+	if (pos.x <= mXScrollBoundryOffset.x) {
+		Graphics::Instance()->SetCameraPosition(
+			Graphics::Instance()->GetCameraX() - mMoveSpeed * mTimer->DeltaTime(),
+			Graphics::Instance()->GetCameraY());
+
+		mXScrollBoundryOffset.x -= mMoveSpeed * mTimer->DeltaTime();
+		mXScrollBoundryOffset.y -= mMoveSpeed * mTimer->DeltaTime();
+
 	}
-	else if (pos.x > mXMoveBounds.y) {
-		pos.x = mXMoveBounds.y;
+	else if (pos.x >= mXScrollBoundryOffset.y) {
+		Graphics::Instance()->SetCameraPosition(
+			Graphics::Instance()->GetCameraX() + mMoveSpeed * mTimer->DeltaTime(),
+			Graphics::Instance()->GetCameraY());
+
+		mXScrollBoundryOffset.x += mMoveSpeed * mTimer->DeltaTime();
+		mXScrollBoundryOffset.y += mMoveSpeed * mTimer->DeltaTime();
 	}
-	if (pos.y < mYMoveBounds.x) {
-		pos.y = mYMoveBounds.x;
+	if (pos.y <= mYScrollBoundryOffset.x) {
+		Graphics::Instance()->SetCameraPosition(
+			Graphics::Instance()->GetCameraX(),
+			Graphics::Instance()->GetCameraY() - mMoveSpeed * mTimer->DeltaTime());
+
+		mYScrollBoundryOffset.x -= mMoveSpeed * mTimer->DeltaTime();
+		mYScrollBoundryOffset.y -= mMoveSpeed * mTimer->DeltaTime();
+
 	}
-	else if (pos.y > mYMoveBounds.y) {
-		pos.y = mYMoveBounds.y;
-		mGrounded = true;
+	else if (pos.y >= mYScrollBoundryOffset.y) {
+
+		if (mYScrollBoundryOffset.y + mYOffset < Graphics::SCREEN_HEIGHT) {
+			Graphics::Instance()->SetCameraPosition(
+				Graphics::Instance()->GetCameraX(),
+				Graphics::Instance()->GetCameraY() + mMoveSpeed * mTimer->DeltaTime());
+
+			mYScrollBoundryOffset.x += mMoveSpeed * mTimer->DeltaTime();
+			mYScrollBoundryOffset.y += mMoveSpeed * mTimer->DeltaTime();
+		}
+		else {
+			Graphics::Instance()->SetCameraPosition(
+				Graphics::Instance()->GetCameraX(), 0);
+			mYScrollBoundryOffset.y = Graphics::SCREEN_HEIGHT;
+			if (pos.y >= Graphics::SCREEN_HEIGHT) {
+				mGrounded = true;
+				pos.y = Graphics::SCREEN_HEIGHT;
+			}
+		}
 	}
 
 	Position(pos);
@@ -92,9 +125,12 @@ Player::Player() {
 	mJumpHeight = 5.0f;
 	mJumpSpeed = 10.0f;
 	mJumpTime = 0.0f;
+	mXOffset = 250.0f;
+	mYOffset = 100.0f;
 
-	mXMoveBounds = Vector2(0.0f, Graphics::SCREEN_WIDTH);
-	mYMoveBounds = Vector2(100.0f, Graphics::SCREEN_HEIGHT);
+	mXScrollBoundryOffset = Vector2(mXOffset, Graphics::SCREEN_WIDTH - mXOffset);
+	//Multiplying the Offset by 3 here because I want the scrollBoundry to be further down from the top of the screen.
+	mYScrollBoundryOffset = Vector2(mYOffset * 3, Graphics::SCREEN_HEIGHT - mYOffset);
 
 	mDeathAnimation = nullptr;
 

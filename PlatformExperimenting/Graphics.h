@@ -28,6 +28,9 @@ namespace SDLFramework {
 
 		static const short SCREEN_WIDTH = 1024;
 		static const short SCREEN_HEIGHT = 896;
+		//static const short LEVEL_WIDTH = 1280;
+		//static const short LEVEL_HEIGHT = 960;
+
 		const char* WINDOW_TITLE = "NAME ME!";
 
 	protected:
@@ -40,18 +43,25 @@ namespace SDLFramework {
 
 		SDL_GLContext mGLContext;
 
+		float mCameraX;
+		float mCameraY;
+
 	public:
 		static void SetMode(RenderMode mode);
 		static Graphics* Instance();
 		static void Release();
 		static bool Initialized();
 
+		void SetCameraPosition(float x, float y);
+		float GetCameraX() const { return mCameraX; }
+		float GetCameraY() const { return mCameraY; }
+
 		SDL_Texture* LoadTexture(std::string path);
 		SDL_Surface* LoadSurface(std::string path);
 		SDL_Texture* CreateTextTexture(TTF_Font* font, std::string text, SDL_Color color);
 		SDL_Surface* CreateTextSurface(TTF_Font* font, std::string text, SDL_Color color);
 
-		virtual void DrawSprite(GLTexture* texture, SDL_Rect* srcRect = nullptr, SDL_Rect* dstRect = nullptr, float angle = 0.0f, SDL_RendererFlip flip = SDL_FLIP_NONE) {}
+		virtual void DrawSprite(GLTexture* texture, SDL_Rect* srcRect = nullptr, SDL_Rect* dstRect = nullptr, float angle = 0.0f, SDL_RendererFlip flip = SDL_FLIP_NONE, bool shouldScroll = true) { }
 		virtual void DrawTexture(SDL_Texture* texture, SDL_Rect* srcRect = nullptr, SDL_Rect* dstRect = nullptr, float angle = 0.0f, SDL_RendererFlip flip = SDL_FLIP_NONE);
 		void DrawLine(float startX, float startY, float endX, float endY);
 
