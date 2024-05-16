@@ -138,10 +138,16 @@ void Player::AddScore(int change) {
 
 void Player::Hit(PhysEntity * other) {
 	if (other->GetName() == mPlatforms->GetPlatform(other->GetId())->GetName()) {
-		if (mPlatforms->GetPlatform(other->GetId())->GetCanBeStoodOn() && Position().y + mPlayerTexture->ScaledDimensions().y >= mPlatforms->GetPlatformPosition(other->GetId()).y) {
-			if (Position().x >= mPlatforms->GetPlatformPosition(other->GetId()).x - mPlatforms->GetPlatform(other->GetId())->GetTexture()->ScaledDimensions().x / 2 &&
-				Position().x <= mPlatforms->GetPlatformPosition(other->GetId()).x + mPlatforms->GetPlatform(other->GetId())->GetTexture()->ScaledDimensions().x / 2) {
+		if (mPlatforms->GetPlatform(other->GetId())->GetCanBeStoodOn() && 
+			Position().y + (mPlayerTexture->ScaledDimensions().y * 0.5) <= mPlatforms->GetPlatformPosition(other->GetId()).y) {
+			if (Position().x > mPlatforms->GetPlatformPosition(other->GetId()).x - mPlatforms->GetPlatform(other->GetId())->GetTexture()->ScaledDimensions().x / 2 &&
+				Position().x < mPlatforms->GetPlatformPosition(other->GetId()).x + mPlatforms->GetPlatform(other->GetId())->GetTexture()->ScaledDimensions().x / 2) {
  				mGrounded = true;
+			}
+		}
+		else if (Position().y - (mPlayerTexture->ScaledDimensions().y * 0.5) >= mPlatforms->GetPlatformPosition(other->GetId()).y) {
+			if (mJumpTime <= 0.5 * mJumpSpeed) {
+				mJumpTime = 0.5 * mJumpSpeed;
 			}
 		}
 		else {
