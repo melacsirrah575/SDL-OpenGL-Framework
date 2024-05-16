@@ -47,8 +47,8 @@ namespace SDLFramework {
 		}
 	}
 
-	void PlatformManager::CreateNewPlatform(bool standable, Vector2 position, GLTexture* texture, Vector2 scale, Vector2 boxColliderOffset) {
-		Platform* platform = new Platform(standable, position, texture, scale, boxColliderOffset);
+	void PlatformManager::CreateNewPlatform(bool standable, Vector2 position, GLTexture* texture, Vector2 scale, Vector2 boxColliderSize, Vector2 boxColliderOffset) {
+		Platform* platform = new Platform(standable, position, texture, scale, boxColliderSize, boxColliderOffset);
 		AddPlatformToMap(platform);
 	}
 

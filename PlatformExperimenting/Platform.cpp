@@ -2,7 +2,7 @@
 #include "BoxCollider.h"
 #include "PhysicsManager.h"
 
-Platform::Platform(bool canBeStoodOn, Vector2 position, GLTexture* texture, Vector2 scale, Vector2 colliderOffset) :
+Platform::Platform(bool canBeStoodOn, Vector2 position, GLTexture* texture, Vector2 scale, Vector2 boxColliderSize, Vector2 colliderOffset) :
 	mCanBeStoodOn(canBeStoodOn) {
 
 	mPlatformTexture = texture;
@@ -13,7 +13,15 @@ Platform::Platform(bool canBeStoodOn, Vector2 position, GLTexture* texture, Vect
 	}
 
 	Position(position);
-	AddCollider(new BoxCollider(Vector2(mPlatformTexture->ScaledDimensions().x, mPlatformTexture->ScaledDimensions().y)), colliderOffset);
+
+	if (boxColliderSize.x == 0.0f && boxColliderSize.y == 0.0f) {
+		std::cout << "No Collider Size given! Using Texture Dimensions." << std::endl;
+		AddCollider(new BoxCollider(Vector2(mPlatformTexture->ScaledDimensions().x, mPlatformTexture->ScaledDimensions().y)), colliderOffset);
+	}
+	else {
+		std::cout << "Collider Size given! Using it!" << std::endl;
+		AddCollider(new BoxCollider(Vector2(boxColliderSize.x, boxColliderSize.y)), colliderOffset);
+	}
 
 	mId = PhysicsManager::Instance()->RegisterEntity(this, PhysicsManager::CollisionLayers::Platforms);
 	mName = "Platform";

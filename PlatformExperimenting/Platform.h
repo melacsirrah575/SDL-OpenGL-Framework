@@ -11,7 +11,7 @@ private:
 
 public:
 	Platform(bool canBeStoodOn, Vector2 Position, GLTexture* texture,
-		Vector2 scale = Vector2(1.0f, 1.0f), Vector2 colliderOffset = Vec2_Zero);
+		Vector2 scale = Vector2(1.0f, 1.0f), Vector2 boxColliderSize = Vec2_Zero, Vector2 colliderOffset = Vec2_Zero);
 	~Platform();
 
 	// Inherited from PhysEntity
