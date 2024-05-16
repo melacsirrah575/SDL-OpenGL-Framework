@@ -2,8 +2,8 @@
 #include "BoxCollider.h"
 #include "PhysicsManager.h"
 
-Platform::Platform(bool canBeStoodOn, Vector2 position, GLTexture* texture, Vector2 scale, Vector2 boxColliderSize, Vector2 colliderOffset) :
-	mCanBeStoodOn(canBeStoodOn) {
+Platform::Platform(bool canBeStoodOn, bool canBeJumpedThrough, Vector2 position, GLTexture* texture, Vector2 scale, Vector2 boxColliderSize, Vector2 colliderOffset) :
+	mCanBeStoodOn(canBeStoodOn), mCanBeJumpedThrough(canBeJumpedThrough) {
 
 	mPlatformTexture = texture;
 	if (mPlatformTexture != nullptr) {
@@ -35,6 +35,10 @@ Platform::~Platform() {
 
 bool Platform::GetCanBeStoodOn() {
 	return mCanBeStoodOn;
+}
+
+bool Platform::GetCanBeJumpedThrough() {
+	return mCanBeJumpedThrough;
 }
 
 Texture* Platform::GetTexture() {

@@ -145,7 +145,8 @@ void Player::Hit(PhysEntity * other) {
  				mGrounded = true;
 			}
 		}
-		else if (Position().y - (mPlayerTexture->ScaledDimensions().y * 0.5) >= mPlatforms->GetPlatformPosition(other->GetId()).y) {
+		else if (!mPlatforms->GetPlatform(other->GetId())->GetCanBeJumpedThrough() &&
+			Position().y - (mPlayerTexture->ScaledDimensions().y * 0.5) >= mPlatforms->GetPlatformPosition(other->GetId()).y) {
 			if (mJumpTime <= 0.5 * mJumpSpeed) {
 				mJumpTime = 0.5 * mJumpSpeed;
 			}
