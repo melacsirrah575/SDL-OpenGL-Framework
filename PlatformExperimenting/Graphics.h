@@ -69,7 +69,7 @@ namespace SDLFramework {
 
 		virtual void ClearBackBuffer();
 		virtual void Render();
-
+		 
 	protected:
 		Graphics();
 		~Graphics();
