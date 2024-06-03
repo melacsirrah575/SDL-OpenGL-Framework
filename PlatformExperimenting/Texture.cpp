@@ -31,6 +31,23 @@ namespace SDLFramework {
 		mSourceRect.y = y;
 		mSourceRect.w = mWidth;
 		mSourceRect.h = mHeight;
+	}	
+	
+	Texture::Texture(std::string filename, int x, int y, int w, int h, SDL_Color color, bool managed) {
+		mGraphics = Graphics::Instance();
+		mTex = AssetManager::Instance()->GetTexture(filename, color, managed);
+
+		mWidth = w;
+		mHeight = h;
+
+		mClipped = true;
+		mDestinationRect.w = mWidth;
+		mDestinationRect.h = mHeight;
+
+		mSourceRect.x = x;
+		mSourceRect.y = y;
+		mSourceRect.w = mWidth;
+		mSourceRect.h = mHeight;
 	}
 
 	Texture::Texture(std::string text, std::string fontPath, int size, SDL_Color color, bool managed) {

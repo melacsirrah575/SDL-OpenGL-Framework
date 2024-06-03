@@ -73,6 +73,21 @@ namespace SDLFramework {
 		return mTextures[fullPath];
 	}
 
+	SDL_Texture* AssetManager::GetTexture(std::string filename, SDL_Color color, bool managed) {
+		std::string fullPath = SDL_GetBasePath();
+		fullPath.append("Assets/" + filename);
+
+		if (mTextures[fullPath] == nullptr) {
+			mTextures[fullPath] = Graphics::Instance()->LoadTexture(fullPath, color);
+		}
+
+		if (mTextures[fullPath] != nullptr && managed) {
+			mTextureRefCount[mTextures[fullPath]] += 1;
+		}
+
+		return mTextures[fullPath];
+	}
+
 	TTF_Font* AssetManager::GetFont(std::string filename, int size) {
 		std::string fullPath = SDL_GetBasePath();
 		fullPath.append("Assets/" + filename);
@@ -182,6 +197,21 @@ namespace SDLFramework {
 
 		if (mSurfaces[fullPath] == nullptr) {
 			mSurfaces[fullPath] = Graphics::Instance()->LoadSurface(fullPath);
+		}
+
+		if (mSurfaces[fullPath] != nullptr && managed) {
+			mSurfaceRefCount[mSurfaces[fullPath]] += 1;
+		}
+
+		return mSurfaces[fullPath];
+	}
+
+	SDL_Surface* AssetManager::GetSurface(std::string filename, SDL_Color color, bool managed) {
+		std::string fullPath = SDL_GetBasePath();
+		fullPath.append("Assets/" + filename);
+
+		if (mSurfaces[fullPath] == nullptr) {
+			mSurfaces[fullPath] = Graphics::Instance()->LoadSurface(fullPath, color);
 		}
 
 		if (mSurfaces[fullPath] != nullptr && managed) {

@@ -57,7 +57,9 @@ namespace SDLFramework {
 		float GetCameraY() const { return mCameraY; }
 
 		SDL_Texture* LoadTexture(std::string path);
+		SDL_Texture* LoadTexture(std::string path, SDL_Color color);
 		SDL_Surface* LoadSurface(std::string path);
+		SDL_Surface* LoadSurface(std::string path, SDL_Color color);
 		SDL_Texture* CreateTextTexture(TTF_Font* font, std::string text, SDL_Color color);
 		SDL_Surface* CreateTextSurface(TTF_Font* font, std::string text, SDL_Color color);
 

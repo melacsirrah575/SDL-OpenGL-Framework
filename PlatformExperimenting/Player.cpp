@@ -3,6 +3,7 @@
 #include "PhysicsManager.h"
 #include "Platform.h"
 #include <sstream>
+#include "ScreenManager.h"
 
 void Player::HandleMovement() {
 	if (mInput->KeyDown(SDL_SCANCODE_RIGHT) || mInput->KeyDown(SDL_SCANCODE_D)) {
@@ -115,7 +116,7 @@ Player::Player() {
 	mScore = 0;
 	mLives = 2;
 	
-	mPlayerTexture = new GLTexture("Black.png");
+	mPlayerTexture = new GLTexture("Black.png", 0, 0, 100, 100, {255, 255, 255});
 	mPlayerTexture->Parent(this);
 	mPlayerTexture->Position(Vec2_Zero);
 	mPlayerTexture->Scale(Vector2(0.2f, 0.6f));
@@ -174,11 +175,11 @@ void Player::AddScore(int change) {
 
 void Player::Hit(PhysEntity * other) {
 	if (other->GetName() == mPlatforms->GetPlatform(other->GetId())->GetName()) {
-		if (mPlatforms->GetPlatform(other->GetId())->GetCanBeStoodOn() && 
+		if (mPlatforms->GetPlatform(other->GetId())->GetCanBeStoodOn() &&
 			Position().y + (mPlayerTexture->ScaledDimensions().y * 0.5) <= mPlatforms->GetPlatformPosition(other->GetId()).y) {
 			if (Position().x > mPlatforms->GetPlatformPosition(other->GetId()).x - mPlatforms->GetPlatform(other->GetId())->GetTexture()->ScaledDimensions().x / 2 &&
 				Position().x < mPlatforms->GetPlatformPosition(other->GetId()).x + mPlatforms->GetPlatform(other->GetId())->GetTexture()->ScaledDimensions().x / 2) {
- 				mGrounded = true;
+				mGrounded = true;
 			}
 		}
 		else if (!mPlatforms->GetPlatform(other->GetId())->GetCanBeJumpedThrough() &&
@@ -190,6 +191,7 @@ void Player::Hit(PhysEntity * other) {
 		else {
 			mGrounded = false;
 		}
+
 	}
 }
 
@@ -206,5 +208,5 @@ void Player::Render() {
 	mPlayerTexture->Render();
 
 
-	PhysEntity::Render();
+	//PhysEntity::Render();
 }

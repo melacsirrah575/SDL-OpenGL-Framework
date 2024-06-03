@@ -73,6 +73,29 @@ namespace SDLFramework {
 		return tex;
 	}
 
+	SDL_Texture* Graphics::LoadTexture(std::string path, SDL_Color color) {
+		if (mRenderer == nullptr) return nullptr;
+
+		SDL_Texture* tex = nullptr;
+		SDL_Surface* surface = IMG_Load(path.c_str());
+
+		if (surface == nullptr) {
+			std::cerr << "Unable to load " << path << ". IMG Error: " << IMG_GetError() << std::endl;
+			return nullptr;
+		}
+
+
+		tex = SDL_CreateTextureFromSurface(mRenderer, surface);
+		if (tex == nullptr) {
+			std::cerr << "Unable to create texture from surface! IMG Error: " << IMG_GetError() << std::endl;
+			return nullptr;
+		}
+
+		SDL_SetTextureColorMod(tex, color.r, color.g, color.b);
+		SDL_FreeSurface(surface);
+		return tex;
+	}
+
 	SDL_Surface* Graphics::LoadSurface(std::string path) {
 		SDL_Surface* surface = IMG_Load(path.c_str());
 
@@ -80,6 +103,54 @@ namespace SDLFramework {
 			std::cerr << "Unable to load " << path << ". IMG Error: " << IMG_GetError() << std::endl;
 			return nullptr;
 		}
+		return surface;
+	}
+
+	SDL_Surface* Graphics::LoadSurface(std::string path, SDL_Color color) {
+		SDL_Surface* surface = IMG_Load(path.c_str());
+
+		if (surface == nullptr) {
+			std::cerr << "Unable to load " << path << ". IMG Error: " << IMG_GetError() << std::endl;
+			return nullptr;
+		}
+
+		//// Lock the surface if needed
+		//if (SDL_MUSTLOCK(surface)) {
+		//	if (SDL_LockSurface(surface) < 0) {
+		//		std::cerr << "Unable to lock surface. SDL Error: " << SDL_GetError() << std::endl;
+		//		SDL_FreeSurface(surface);
+		//		return nullptr;
+		//	}
+		//}
+
+		// Get the pixel format information
+		SDL_PixelFormat* format = surface->format;
+
+		// Loop through each pixel
+		for (int y = 0; y < surface->h; y++) {
+			for (int x = 0; x < surface->w; x++) {
+				// Get the pixel
+				Uint32* pixels = (Uint32*)surface->pixels + y * surface->pitch / 4 + x;
+
+				// Get the RGB values of the pixel
+				Uint8 r, g, b;
+				SDL_GetRGB(*pixels, format, &r, &g, &b);
+
+				// Modify the RGB values by the color argument
+				r = (r * color.r) / 255;
+				g = (g * color.g) / 255;
+				b = (b * color.b) / 255;
+
+				// Set the modified pixel back
+				*pixels = SDL_MapRGB(format, r, g, b);
+			}
+		}
+
+		// Unlock the surface if needed
+		//if (SDL_MUSTLOCK(surface)) {
+		//	SDL_UnlockSurface(surface);
+		//}
+
 		return surface;
 	}
 

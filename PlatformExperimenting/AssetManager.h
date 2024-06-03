@@ -48,8 +48,10 @@ namespace SDLFramework {
 		static void Release();
 
 		SDL_Texture* GetTexture(std::string filename, bool managed = true);
+		SDL_Texture* GetTexture(std::string filename, SDL_Color color, bool managed = true);
 		SDL_Texture* GetText(std::string text, std::string filename, int size, SDL_Color color, bool managed = true);
 		SDL_Surface* GetSurface(std::string filename, bool managed = true);
+		SDL_Surface* GetSurface(std::string filename, SDL_Color color, bool managed = true);
 		SDL_Surface* GetTextSurface(std::string text, std::string filename, int size, SDL_Color color, bool managed = true);
 
 		Mix_Music* GetMusic(std::string filename, bool managed = true);

@@ -22,6 +22,7 @@ namespace SDLFramework {
 
 		GLTexture(std::string filename, bool shouldScroll = true, bool managed = false);
 		GLTexture(std::string filename, int x, int y, int w, int h, bool shouldScroll = true, bool managed = false);
+		GLTexture(std::string filename, int x, int y, int w, int h, SDL_Color color, bool shouldScroll = true, bool managed = false);
 		GLTexture(std::string text, std::string fontPath, int size, SDL_Color color, bool shouldScroll = true, bool managed = false);
 		virtual ~GLTexture();
 
@@ -29,6 +30,7 @@ namespace SDLFramework {
 		void Bind();
 
 		void SetSurfaceTexture(std::string filename, bool managed = false);
+		void SetSurfaceTexture(std::string filename, SDL_Color color, bool managed = false);
 		void SetSurfaceTextTexture(std::string text, std::string filename, int size, SDL_Color color, bool managed = false);
 
 		// Inherited from Texture
