@@ -56,7 +56,7 @@ namespace SDLFramework {
 		mAnim.done = false;
 	}
 
-	bool AnimatedGLTexture::IsAnimating() {
+	bool AnimatedGLTexture::IsAnimating() const {
 		return !mAnim.done;
 	}
 

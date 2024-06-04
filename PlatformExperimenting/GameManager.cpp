@@ -2,9 +2,9 @@
 
 namespace SDLFramework {
 
-	GameManager * GameManager::sInstance = nullptr;
+	GameManager* GameManager::sInstance = nullptr;
 
-	GameManager * GameManager::Instance() {
+	GameManager* GameManager::Instance() {
 		if (sInstance == nullptr) {
 			sInstance = new GameManager();
 		}
@@ -24,6 +24,9 @@ namespace SDLFramework {
 				switch (mEvent.type) {
 				case SDL_QUIT:
 					mQuit = true;
+					break;
+				case SDL_MOUSEWHEEL:
+					mInputManager->MouseWheel(mEvent.wheel.y);
 					break;
 				}
 			}
@@ -65,19 +68,14 @@ namespace SDLFramework {
 		mAssetManager = AssetManager::Instance();
 		mInputManager = InputManager::Instance();
 		mAudioManager = AudioManager::Instance();
-		mPlatformManager = PlatformManager::Instance();
-
+		mTimer = Timer::Instance();
+		mScreenManager = ScreenManager::Instance();
 		mPhysicsManager = PhysicsManager::Instance();
 		mPhysicsManager->SetLayerCollisionMask(PhysicsManager::CollisionLayers::Friendly, PhysicsManager::CollisionFlags::Hostile | PhysicsManager::CollisionFlags::HostileProjectiles | PhysicsManager::CollisionFlags::Platforms);
 		mPhysicsManager->SetLayerCollisionMask(PhysicsManager::CollisionLayers::FriendlyProjectiles, PhysicsManager::CollisionFlags::Hostile);
 		mPhysicsManager->SetLayerCollisionMask(PhysicsManager::CollisionLayers::Hostile, PhysicsManager::CollisionFlags::Friendly | PhysicsManager::CollisionFlags::FriendlyProjectiles);
 		mPhysicsManager->SetLayerCollisionMask(PhysicsManager::CollisionLayers::HostileProjectiles, PhysicsManager::CollisionFlags::Friendly);
 		mPhysicsManager->SetLayerCollisionMask(PhysicsManager::CollisionLayers::Platforms, PhysicsManager::CollisionFlags::Friendly | PhysicsManager::CollisionFlags::FriendlyProjectiles | PhysicsManager::CollisionFlags::HostileProjectiles);
-
-
-		mTimer = Timer::Instance();
-
-		mScreenManager = ScreenManager::Instance();
 	}
 
 	GameManager::~GameManager() {

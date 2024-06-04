@@ -3,121 +3,127 @@
 
 namespace SDLFramework {
 
-	GLTexture::GLTexture(std::string filename, bool shouldScroll, bool managed)
-		: Texture(filename, managed) { 
-		ShouldScroll = shouldScroll;
-		SetSurfaceTexture(filename, managed);
-		Data = Surface->pixels;
-		
-		WrapS = GL_CLAMP_TO_BORDER;
-		WrapT = GL_CLAMP_TO_BORDER;
+    GLTexture::GLTexture(std::string filename, bool shouldScroll, bool managed)
+        : Texture(filename, managed) {
+        ShouldScroll = shouldScroll;
+        SetSurfaceTexture(filename, managed);
+        Data = Surface->pixels;
 
-		FilterMag = GL_LINEAR;
-		FilterMin = GL_LINEAR;
+        WrapS = GL_CLAMP_TO_BORDER;
+        WrapT = GL_CLAMP_TO_BORDER;
 
-		mWidth = Surface->w;
-		mHeight = Surface->h;
-	}
+        FilterMag = GL_LINEAR;
+        FilterMin = GL_LINEAR;
 
-	GLTexture::GLTexture(std::string filename, int x, int y, int w, int h, bool shouldScroll, bool managed)
-		: Texture(filename, x, y, w, h, managed) { 
-		ShouldScroll = shouldScroll;
-		SetSurfaceTexture(filename, managed);
-		Data = Surface->pixels;
+        mWidth = Surface->w;
+        mHeight = Surface->h;
+    }
 
-		WrapS = GL_CLAMP_TO_BORDER;
-		WrapT = GL_CLAMP_TO_BORDER;
+    GLTexture::GLTexture(std::string filename, int x, int y, int w, int h, bool shouldScroll, bool managed)
+        : Texture(filename, x, y, w, h, managed) {
+        ShouldScroll = shouldScroll;
+        SetSurfaceTexture(filename, managed);
+        Data = Surface->pixels;
 
-		FilterMag = GL_LINEAR;
-		FilterMin = GL_LINEAR;
-	}
+        WrapS = GL_CLAMP_TO_BORDER;
+        WrapT = GL_CLAMP_TO_BORDER;
 
-	GLTexture::GLTexture(std::string text, std::string fontPath, int size, SDL_Color color, bool shouldScroll, bool managed)
-		: Texture(text, fontPath, size, color, managed) { 
-		ShouldScroll = shouldScroll;
-		SetSurfaceTextTexture(text, fontPath, size, color, managed);
+        FilterMag = GL_LINEAR;
+        FilterMin = GL_LINEAR;
+    }
 
-		WrapS = GL_CLAMP_TO_BORDER;
-		WrapT = GL_CLAMP_TO_BORDER;
+    GLTexture::GLTexture(std::string text, std::string fontPath, int size, SDL_Color color, bool shouldScroll, bool managed)
+        : Texture(text, fontPath, size, color, managed) {
+        ShouldScroll = shouldScroll;
+        SetSurfaceTextTexture(text, fontPath, size, color, managed);
 
-		FilterMag = GL_LINEAR;
-		FilterMin = GL_LINEAR;
+        WrapS = GL_CLAMP_TO_BORDER;
+        WrapT = GL_CLAMP_TO_BORDER;
 
-		mWidth = Surface->w;
-		mHeight = Surface->h;
-	}
+        FilterMag = GL_LINEAR;
+        FilterMin = GL_LINEAR;
 
-	GLTexture::~GLTexture() {
-		AssetManager::Instance()->DestroySurface(Surface);
-		Surface = nullptr;
-	}
+        mWidth = Surface->w;
+        mHeight = Surface->h;
+    }
 
-	void GLTexture::Generate() {
-		SDL_PixelFormat format = *Surface->format;
+    GLTexture::~GLTexture() {
+        if (Surface) {
+            AssetManager::Instance()->DestroySurface(Surface);
+            Surface = nullptr;
+        }
+        if (ID) {
+            glDeleteTextures(1, &ID);
+            ID = 0;
+        }
+    }
 
-		GLint nOfColors = format.BytesPerPixel;
-		if (nOfColors == 4) {
-			if (format.Rmask == 0x000000FF) {
-				Mode = GL_RGBA;
-			}
-			else {
-				Mode = GL_BGRA;
-			}
-		}
-		else if (nOfColors == 3) {
-			if (format.Rmask == 0x000000FF) {
-				Mode = GL_RGB;
-			}
-			else {
-				Mode = GL_BGR;
-			}
-		}
-		else {
-			Mode = GL_RGBA;
-		}
+    void GLTexture::Generate() {
+        SDL_PixelFormat* format = Surface->format;
+        GLint nOfColors = format->BytesPerPixel;
+        if (nOfColors == 4) {
+            if (format->Rmask == 0x000000FF) {
+                Mode = GL_RGBA;
+            }
+            else {
+                Mode = GL_BGRA;
+            }
+        }
+        else if (nOfColors == 3) {
+            if (format->Rmask == 0x000000FF) {
+                Mode = GL_RGB;
+            }
+            else {
+                Mode = GL_BGR;
+            }
+        }
+        else {
+            Mode = GL_RGBA;
+        }
 
-		glPixelStorei(GL_UNPACK_ROW_LENGTH, Surface->pitch / Surface->format->BytesPerPixel);
-		glGenTextures(1, &ID);
-		glBindTexture(GL_TEXTURE_2D, ID);
+        // ttf garbled texture fix
+        glPixelStorei(GL_UNPACK_ROW_LENGTH, Surface->pitch / Surface->format->BytesPerPixel);
 
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, WrapS);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, WrapT);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, FilterMin);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, FilterMag);
+        glGenTextures(1, &ID);
+        glBindTexture(GL_TEXTURE_2D, ID);
 
-		glTexImage2D(GL_TEXTURE_2D, 0, nOfColors, Surface->w, Surface->h, 0, Mode, GL_UNSIGNED_BYTE, Data);
-		glGenerateMipmap(GL_TEXTURE_2D);
-	}
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, WrapS);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, WrapT);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, FilterMin);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, FilterMag);
 
-	void GLTexture::Bind() {
-		glBindTexture(GL_TEXTURE_2D, ID);
-	}
+        glTexImage2D(GL_TEXTURE_2D, 0, nOfColors, Surface->w, Surface->h, 0, Mode, GL_UNSIGNED_BYTE, Data);
+        glGenerateMipmap(GL_TEXTURE_2D);
+    }
 
-	void GLTexture::SetSurfaceTexture(std::string filename, bool managed) {
-		Surface = AssetManager::Instance()->GetSurface(filename, managed);
-		Data = Surface->pixels;
-		if (Surface != nullptr) {
-			Generate();
-		}
-		else {
-			std::cerr << "Unable to set surface " << filename << " in GLTexture! Surface is null." << std::endl;
-		}
-	}
+    void GLTexture::Bind() {
+        glBindTexture(GL_TEXTURE_2D, ID);
+    }
 
-	void GLTexture::SetSurfaceTextTexture(std::string text, std::string filename, int size, SDL_Color color, bool managed) {
-		Surface = AssetManager::Instance()->GetTextSurface(text, filename, size, color, managed);
-		Data = Surface->pixels;
-		if (Surface != nullptr) {
-			Generate();
-		}
-		else {
-			std::cerr << "Unable to set surface text " << filename << " in GLTexture! Surface is null." << std::endl;
-		}
-	}
+    void GLTexture::SetSurfaceTexture(std::string filename, bool managed) {
+        Surface = AssetManager::Instance()->GetSurface(filename, managed);
+        Data = Surface->pixels;
+        if (Surface != nullptr) {
+            Generate();
+        }
+        else {
+            std::cerr << "Unable to set surface " << filename << " in GLTexture! Surface is null." << std::endl;
+        }
+    }
 
-	void GLTexture::Render() {
-		UpdateDstRect();
+    void GLTexture::SetSurfaceTextTexture(std::string text, std::string filename, int size, SDL_Color color, bool managed) {
+        Surface = AssetManager::Instance()->GetTextSurface(text, filename, size, color, managed);
+        Data = Surface->pixels;
+        if (Surface != nullptr) {
+            Generate();
+        }
+        else {
+            std::cerr << "Unable to set surface text " << filename << " in GLTexture! Surface is null." << std::endl;
+        }
+    }
 
-		GLGraphics::Instance()->DrawSprite(this, mClipped ? &mSourceRect : nullptr, &mDestinationRect, Rotation(World), Flip, ShouldScroll);
-	}
+    void GLTexture::Render() {
+        UpdateDstRect();
+        GLGraphics::Instance()->DrawSprite(this, mClipped ? &mSourceRect : nullptr, &mDestinationRect, Rotation(World), mFlip, ShouldScroll);
+    }
 }

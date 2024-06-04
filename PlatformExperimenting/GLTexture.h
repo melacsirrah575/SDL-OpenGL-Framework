@@ -2,8 +2,6 @@
 #define __GLTEXTURE_H
 #include "Texture.h"
 
-#include <glew.h>
-
 namespace SDLFramework {
 
 	class GLTexture
@@ -17,7 +15,7 @@ namespace SDLFramework {
 		bool Rendererd;
 		bool ShouldScroll;
 		void* Data;
-		SDL_RendererFlip Flip;
+
 		SDL_Surface* Surface;
 
 		GLTexture(std::string filename, bool shouldScroll = true, bool managed = false);

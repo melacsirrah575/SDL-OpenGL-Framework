@@ -5,7 +5,7 @@
 #include "ShaderUtil.h"
 
 namespace SDLFramework {
-	
+
 	class GLGraphics
 		: public Graphics {
 		friend class Graphics;
@@ -17,7 +17,7 @@ namespace SDLFramework {
 		glm::mat4 orthoMatrix;
 
 	public:
-		void InitRenderData(Texture* texture, SDL_Rect* srcRect, GLuint quadVAO);
+		void InitRenderData(Texture* texture, SDL_Rect* srcRect, GLuint quadVAO, SDL_RendererFlip flip = SDL_FLIP_NONE);
 		void InitLoadShaderData();
 
 		// Inherited from Graphics

@@ -11,25 +11,25 @@ namespace SDLFramework {
 	class GameManager
 	{
 	private:
-		static GameManager * sInstance;
+		static GameManager* sInstance;
 		const int FRAME_RATE = 60;
 
 		bool mQuit;
-		Graphics * mGraphics;
-		AssetManager * mAssetManager;
-		InputManager * mInputManager;
-		AudioManager * mAudioManager;
-		PhysicsManager * mPhysicsManager;
+		Graphics* mGraphics;
+		AssetManager* mAssetManager;
+		InputManager* mInputManager;
+		AudioManager* mAudioManager;
+		PhysicsManager* mPhysicsManager;
 		PlatformManager* mPlatformManager;
 
-		Timer * mTimer;
+		Timer* mTimer;
 
 		SDL_Event mEvent;
 
-		ScreenManager * mScreenManager;
+		ScreenManager* mScreenManager;
 
 	public:
-		static GameManager * Instance();
+		static GameManager* Instance();
 		static void Release();
 
 		void Run();

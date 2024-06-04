@@ -2,7 +2,6 @@
 #include "AssetManager.h"
 #include "MathHelper.h"
 
-#include <glew.h>
 #include <glm.hpp>
 #include <gtx/transform.hpp>
 
@@ -11,17 +10,18 @@ namespace SDLFramework {
 		float rad = angle * DEG_TO_RAD;
 		Vector2 pos = texture->Position(GameEntity::Space::World);
 
-		
 		if (shouldScroll) {
 			pos.x -= mCameraX;
 			pos.y -= mCameraY;
 		}
 
-
-		InitRenderData(texture, srcRect, texture->ID);
+		InitRenderData(texture, srcRect, texture->ID, flip);
 
 		shaderUtil.Use();
 		glBindTexture(GL_TEXTURE_2D, texture->ID);
+
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -62,7 +62,7 @@ namespace SDLFramework {
 		glBindTexture(GL_TEXTURE_2D, 0);
 	}
 
-	void GLGraphics::InitRenderData(Texture* texture, SDL_Rect* srcRect, GLuint quadVAO) {
+	void GLGraphics::InitRenderData(Texture* texture, SDL_Rect* srcRect, GLuint quadVAO, SDL_RendererFlip flip) {
 		GLTexture* glTexture = dynamic_cast<GLTexture*>(texture);
 
 		if (glTexture == nullptr) {
@@ -87,6 +87,16 @@ namespace SDLFramework {
 			topLeft = glm::vec2(srcRect->x / width, (srcRect->y + srcRect->h) / height);
 			bottomLeft = glm::vec2(srcRect->x / width, srcRect->y / height);
 			bottomRight = glm::vec2((srcRect->x + srcRect->w) / width, srcRect->y / height);
+		}
+
+		if (flip == SDL_FLIP_HORIZONTAL) {
+			std::swap(topRight.x, topLeft.x);
+			std::swap(bottomRight.x, bottomLeft.x);
+		}
+
+		if (flip == SDL_FLIP_VERTICAL) {
+			std::swap(topRight.y, bottomRight.y);
+			std::swap(topLeft.y, bottomLeft.y);
 		}
 
 		Vertex vertData[6];
@@ -127,7 +137,7 @@ namespace SDLFramework {
 		AssetManager::Instance()->LoadShader(vShaderPath.c_str(), fShaderPath.c_str(), nullptr, "Sprite-Default");
 		shaderUtil = AssetManager::Instance()->GetShaderUtil("Sprite-Default");
 		orthoMatrix = glm::ortho(0.0f, (float)SCREEN_WIDTH, (float)SCREEN_HEIGHT, 0.0f, -1.0f, 1.0f);
-		
+
 		shaderUtil.Use();
 		shaderUtil.SetVector2f("vertexPosition", glm::vec2(0, 0));
 		shaderUtil.SetMatrix4f("proj", orthoMatrix);
@@ -140,7 +150,7 @@ namespace SDLFramework {
 	void GLGraphics::Render() {
 		SDL_GL_SwapWindow(mWindow);
 	}
-	
+
 	bool GLGraphics::Init() {
 		if (!sInitialized) {
 			return false;
@@ -156,6 +166,6 @@ namespace SDLFramework {
 	}
 
 	GLGraphics::~GLGraphics() {
-	
+
 	}
 }

@@ -39,23 +39,25 @@ private:
 
 private:
 	void HandleMovement();
+	void HandleJumping();
+	void HandleBoundsCheckingAndCameraScrolling();
 
 public:
 	Player();
 	~Player();
 
 	void Visible(bool visible);
-	bool IsAnimating();
+	bool IsAnimating() const;
 
-	int Score();
-	int Lives();
+	int GetScore() const;
+	int GetLives() const;
 
 	void AddScore(int change);
 
 	// Inherited from PhysEntity
 	void Hit(PhysEntity * other) override;
 	
-	bool WasHit();
+	bool GetWasHit() const;
 
 	void Update() override;
 	void Render() override;

@@ -1,8 +1,8 @@
- #include "ScreenManager.h"
+#include "ScreenManager.h"
 
-ScreenManager * ScreenManager::sInstance = nullptr;
+ScreenManager* ScreenManager::sInstance = nullptr;
 
-ScreenManager * ScreenManager::Instance() {
+ScreenManager* ScreenManager::Instance() {
 	if (sInstance == nullptr) {
 		sInstance = new ScreenManager();
 	}
@@ -23,19 +23,20 @@ void ScreenManager::Update() {
 
 		if (mInput->KeyPressed(SDL_SCANCODE_RETURN)) {
 			mCurrentScreen = Play;
+			//If our StartScreen has ANY Animations, we should restart them HERE!
 			mPlayScreen->StartNewGame();
 		}
 		break;
 	case Play:
 		mPlayScreen->Update();
-		if (mPlayScreen->GameOver()) {
+		if (mPlayScreen->GameOver() || mInput->KeyPressed(SDL_SCANCODE_ESCAPE)) {
 			mCurrentScreen = Start;
 		}
 		break;
 	}
 }
 
-void ScreenManager::Render() { 
+void ScreenManager::Render() {
 
 	switch (mCurrentScreen) {
 	case Start:

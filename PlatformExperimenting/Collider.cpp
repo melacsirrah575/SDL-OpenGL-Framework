@@ -17,7 +17,7 @@ Collider::~Collider() {
 }
 
 
-Collider::ColliderType Collider::GetType() {
+Collider::ColliderType Collider::GetType() const {
 	return mType;
 }
 
