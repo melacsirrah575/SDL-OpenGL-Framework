@@ -2,6 +2,7 @@
 #include "AssetManager.h"
 #include "MathHelper.h"
 
+#include <GL/glew.h>
 #include <glm.hpp>
 #include <gtx/transform.hpp>
 

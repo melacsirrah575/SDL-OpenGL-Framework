@@ -2,7 +2,7 @@
 #define __SHADERUTIL_H
 #include <string>
 
-#include <glew.h>
+#include <GL/glew.h>
 #include <glm.hpp>
 
 namespace SDLFramework {
