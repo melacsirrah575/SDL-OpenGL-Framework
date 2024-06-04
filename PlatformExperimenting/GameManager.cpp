@@ -49,6 +49,7 @@ namespace SDLFramework {
 	void GameManager::LateUpdate() {
 		mInputManager->UpdatePrevInput();
 		mPhysicsManager->Update();
+		mCamera->Update();
 	}
 
 	void GameManager::Render() {
@@ -65,6 +66,7 @@ namespace SDLFramework {
 			mQuit = true;
 		}
 
+		mCamera = Camera::Instance();
 		mAssetManager = AssetManager::Instance();
 		mInputManager = InputManager::Instance();
 		mAudioManager = AudioManager::Instance();
@@ -99,6 +101,12 @@ namespace SDLFramework {
 
 		Graphics::Release();
 		mGraphics = nullptr;
+
+		PlatformManager::Release();
+		mPlatformManager = nullptr;
+
+		Camera::Release();
+		mCamera = nullptr;
 
 		// Quit SDL subsystems
 		SDL_Quit();
