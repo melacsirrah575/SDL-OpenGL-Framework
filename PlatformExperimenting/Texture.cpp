@@ -14,6 +14,8 @@ namespace SDLFramework {
 
 		mDestinationRect.w = mWidth;
 		mDestinationRect.h = mHeight;
+
+		mFlip = SDL_FLIP_NONE;
 	}
 
 	Texture::Texture(std::string filename, int x, int y, int w, int h, bool managed) {
@@ -31,6 +33,8 @@ namespace SDLFramework {
 		mSourceRect.y = y;
 		mSourceRect.w = mWidth;
 		mSourceRect.h = mHeight;
+
+		mFlip = SDL_FLIP_NONE;
 	}
 
 	Texture::Texture(std::string text, std::string fontPath, int size, SDL_Color color, bool managed) {
@@ -45,6 +49,8 @@ namespace SDLFramework {
 
 		mDestinationRect.w = mWidth;
 		mDestinationRect.h = mHeight;
+
+		mFlip = SDL_FLIP_NONE;
 	}
 
 	Texture::~Texture() {
@@ -61,14 +67,14 @@ namespace SDLFramework {
 		return scaledDimensions;
 	}
 
-	void Texture::SetSourceRect(SDL_Rect * sourceRect) {
+	void Texture::SetSourceRect(SDL_Rect* sourceRect) {
 		mSourceRect = *sourceRect;
 	}
 
 	void Texture::Render() {
 		UpdateDstRect();
 
-		mGraphics->DrawTexture(mTex, mClipped ? &mSourceRect : nullptr, &mDestinationRect, Rotation(World));
+		mGraphics->DrawTexture(mTex, mClipped ? &mSourceRect : nullptr, &mDestinationRect, Rotation(World), mFlip);
 	}
 
 	void Texture::UpdateDstRect() {
@@ -78,5 +84,20 @@ namespace SDLFramework {
 		mDestinationRect.y = (int)(pos.y - mHeight * scale.y * 0.5f);
 		mDestinationRect.w = (int)(mWidth * scale.x);
 		mDestinationRect.h = (int)(mHeight * scale.y);
+	}
+
+	void Texture::Flip(bool hFlip, bool vFlip) {
+		if (hFlip && vFlip) {
+			mFlip = (SDL_RendererFlip)(SDL_FLIP_HORIZONTAL | SDL_FLIP_VERTICAL);
+		}
+		else if (hFlip) {
+			mFlip = SDL_FLIP_HORIZONTAL;
+		}
+		else if (vFlip) {
+			mFlip = SDL_FLIP_VERTICAL;
+		}
+		else {
+			mFlip = SDL_FLIP_NONE;
+		}
 	}
 }

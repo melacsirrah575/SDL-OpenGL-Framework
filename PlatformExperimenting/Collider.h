@@ -22,7 +22,7 @@ public:
 
 	virtual Vector2 GetFurthestPoint() = 0;
 
-	ColliderType GetType();
+	ColliderType GetType() const;
 
 	virtual void Render() override;
 };

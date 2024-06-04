@@ -2,9 +2,9 @@
 
 namespace SDLFramework {
 
-	InputManager * InputManager::sInstance = nullptr;
+	InputManager* InputManager::sInstance = nullptr;
 
-	InputManager * InputManager::Instance() {
+	InputManager* InputManager::Instance() {
 		if (sInstance == nullptr) {
 			sInstance = new InputManager();
 		}
@@ -98,6 +98,14 @@ namespace SDLFramework {
 		}
 
 		return (mPrevMouseState & mask) && !(mMouseState & mask);
+	}
+
+	int InputManager::MouseWheel() {
+		return mMouseWheelY;
+	}
+
+	void InputManager::MouseWheel(int mouseWheelY) {
+		mMouseWheelY = mouseWheelY;
 	}
 
 	Vector2 InputManager::MousePosition() {

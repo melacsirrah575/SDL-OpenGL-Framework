@@ -12,8 +12,6 @@
 #include <iostream>
 #include <string>
 
-#include <glew.h>
-
 namespace SDLFramework {
 
 	class GLTexture;
@@ -26,11 +24,8 @@ namespace SDLFramework {
 			GL
 		};
 
-		static const short SCREEN_WIDTH = 1024;
-		static const short SCREEN_HEIGHT = 896;
-		//static const short LEVEL_WIDTH = 1280;
-		//static const short LEVEL_HEIGHT = 960;
-
+		static const short SCREEN_WIDTH = 896;
+		static const short SCREEN_HEIGHT = 1024;
 		const char* WINDOW_TITLE = "NAME ME!";
 
 	protected:

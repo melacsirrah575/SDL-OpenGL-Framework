@@ -2,7 +2,7 @@
 
 void Level::HandleCollisions() {
 	if (!mPlayerHit) {
-		if (mPlayer->WasHit()) {
+		if (mPlayer->GetWasHit()) {
 			mPlayerHit = true;
 			mRespawnTimer = 0.0f;
 			mPlayer->Active(false);
@@ -12,7 +12,7 @@ void Level::HandleCollisions() {
 
 void Level::HandlePlayerDeath() {
 	if (!mPlayer->IsAnimating()) {
-		if (mPlayer->Lives() > 0) {
+		if (mPlayer->GetLives() > 0) {
 			if (mRespawnTimer == 0.0f) {
 				mPlayer->Visible(false);
 			}

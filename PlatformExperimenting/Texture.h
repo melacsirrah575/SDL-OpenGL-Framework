@@ -7,8 +7,8 @@ namespace SDLFramework {
 
 	class Texture : public GameEntity {
 	protected:
-		SDL_Texture * mTex;
-		Graphics * mGraphics;
+		SDL_Texture* mTex;
+		Graphics* mGraphics;
 
 		int mWidth;
 		int mHeight;
@@ -16,6 +16,8 @@ namespace SDLFramework {
 		bool mClipped;
 		SDL_Rect mSourceRect;
 		SDL_Rect mDestinationRect;
+
+		SDL_RendererFlip mFlip;
 
 	public:
 		Texture(std::string filename, bool managed = true);
@@ -25,7 +27,9 @@ namespace SDLFramework {
 
 		Vector2 ScaledDimensions();
 
-		void SetSourceRect(SDL_Rect * sourceRect);
+		void SetSourceRect(SDL_Rect* sourceRect);
+
+		void Flip(bool hFlip, bool vFLip);
 
 		virtual void Render() override;
 

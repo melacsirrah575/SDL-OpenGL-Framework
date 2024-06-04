@@ -12,7 +12,7 @@ public:
 
 	Vector2 GetFurthestPoint() override;
 
-	float GetRadius();
+	float GetRadius() const;
 };
 
 
