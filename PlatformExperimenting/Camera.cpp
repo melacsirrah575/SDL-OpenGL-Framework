@@ -24,6 +24,9 @@ namespace SDLFramework {
 		mZoom = 1.0f;
 		mSmoothingFactor = 1.0f;
 		mZoomLerpFactor = 0.1f;
+
+		//mShouldMoveWithTarget = true;
+
 		mTarget = nullptr;
 	}
 
@@ -33,7 +36,7 @@ namespace SDLFramework {
 	}
 
 	Vector2 Camera::GetCameraPosition() {
-		return (mX, mY);
+		return Vector2(mX, mY);
 	}
 
 	void Camera::SetCameraPosition(Vector2 position) {
@@ -92,6 +95,18 @@ namespace SDLFramework {
 		y = (y - mY) * mZoom;
 	}
 
+	// Been debating on whether I want the Camera to handle its position regarding its target
+	// OR whether I want the target to tell the Camera when to update
+	// For now, I am doing the latter but am wanting to keep this code in here in case I/we change our minds
+	// 
+	//bool Camera::GetShouldMoveWithTarget() {
+	//	return mShouldMoveWithTarget;
+	//}
+
+	//void Camera::SetShouldMoveWithTarget(bool value) {
+	//	mShouldMoveWithTarget = value;
+	//}
+
 	void Camera::Update() {
 		if (std::fabs(mZoom - mSmoothingFactor) > 0.01f) {
 			mZoom += (mSmoothingFactor - mZoom) * mZoomLerpFactor * mTimer->DeltaTime();
@@ -99,5 +114,9 @@ namespace SDLFramework {
 				mZoom = mSmoothingFactor;
 			}
 		}
+
+		//if (mShouldMoveWithTarget) {
+		//	PositionToCurrentTarget();
+		//}
 	}
 }

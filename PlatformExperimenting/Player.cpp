@@ -6,6 +6,7 @@
 
 
 Player::Player() {
+	mCamera = Camera::Instance();
 	mTimer = Timer::Instance();
 	mInput = InputManager::Instance();
 	mAudio = AudioManager::Instance();
@@ -103,26 +104,29 @@ void Player::HandleJumping() {
 void Player::HandleBoundsCheckingAndCameraScrolling() {
 	Vector2 pos = Position(Local);
 	if (pos.x <= mXScrollBoundryOffset.x) {
-		Graphics::Instance()->SetCameraPosition(
-			Graphics::Instance()->GetCameraX() - mMoveSpeed * mTimer->DeltaTime(),
-			Graphics::Instance()->GetCameraY());
+		std::cout << "Old Camera Pos: " << mCamera->GetCameraPosition().x << ", " << mCamera->GetCameraPosition().y << std::endl;
+		mCamera->SetCameraPosition(
+			mCamera->GetCameraPosition().x - mCamera->GetMoveSpeed() * mTimer->DeltaTime(),
+			mCamera->GetCameraPosition().y);
+
+		std::cout << "New Camera Pos: " << mCamera->GetCameraPosition().x << ", " << mCamera->GetCameraPosition().y << std::endl;
 
 		mXScrollBoundryOffset.x -= mMoveSpeed * mTimer->DeltaTime();
 		mXScrollBoundryOffset.y -= mMoveSpeed * mTimer->DeltaTime();
 
 	}
 	else if (pos.x >= mXScrollBoundryOffset.y) {
-		Graphics::Instance()->SetCameraPosition(
-			Graphics::Instance()->GetCameraX() + mMoveSpeed * mTimer->DeltaTime(),
-			Graphics::Instance()->GetCameraY());
+		mCamera->SetCameraPosition(
+			mCamera->GetCameraPosition().x + mCamera->GetMoveSpeed() * mTimer->DeltaTime(),
+			mCamera->GetCameraPosition().y);
 
 		mXScrollBoundryOffset.x += mMoveSpeed * mTimer->DeltaTime();
 		mXScrollBoundryOffset.y += mMoveSpeed * mTimer->DeltaTime();
 	}
 	if (pos.y <= mYScrollBoundryOffset.x) {
-		Graphics::Instance()->SetCameraPosition(
-			Graphics::Instance()->GetCameraX(),
-			Graphics::Instance()->GetCameraY() - mMoveSpeed * mTimer->DeltaTime());
+		mCamera->SetCameraPosition(
+			mCamera->GetCameraPosition().x,
+			mCamera->GetCameraPosition().y - mCamera->GetMoveSpeed() * mTimer->DeltaTime());
 
 		mYScrollBoundryOffset.x -= mMoveSpeed * mTimer->DeltaTime();
 		mYScrollBoundryOffset.y -= mMoveSpeed * mTimer->DeltaTime();
@@ -131,16 +135,16 @@ void Player::HandleBoundsCheckingAndCameraScrolling() {
 	else if (pos.y >= mYScrollBoundryOffset.y) {
 
 		if (mYScrollBoundryOffset.y + mYOffset < Graphics::SCREEN_HEIGHT) {
-			Graphics::Instance()->SetCameraPosition(
-				Graphics::Instance()->GetCameraX(),
-				Graphics::Instance()->GetCameraY() + mMoveSpeed * mTimer->DeltaTime());
+			mCamera->SetCameraPosition(
+				mCamera->GetCameraPosition().x,
+				mCamera->GetCameraPosition().y + mCamera->GetMoveSpeed() * mTimer->DeltaTime());
 
 			mYScrollBoundryOffset.x += mMoveSpeed * mTimer->DeltaTime();
 			mYScrollBoundryOffset.y += mMoveSpeed * mTimer->DeltaTime();
 		}
 		else {
-			Graphics::Instance()->SetCameraPosition(
-				Graphics::Instance()->GetCameraX(), 0);
+			mCamera->SetCameraPosition(
+				mCamera->GetCameraPosition().x, 0);
 			mYScrollBoundryOffset.y = Graphics::SCREEN_HEIGHT;
 			if (pos.y >= Graphics::SCREEN_HEIGHT) {
 				mGrounded = true;

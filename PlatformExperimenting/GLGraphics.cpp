@@ -12,8 +12,8 @@ namespace SDLFramework {
 		Vector2 pos = texture->Position(GameEntity::Space::World);
 
 		if (shouldScroll) {
-			pos.x -= mCameraX;
-			pos.y -= mCameraY;
+			pos.x -= Camera::Instance()->GetCameraPosition().x;
+			pos.y -= Camera::Instance()->GetCameraPosition().y;
 		}
 
 		InitRenderData(texture, srcRect, texture->ID, flip);

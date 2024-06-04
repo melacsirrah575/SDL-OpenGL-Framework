@@ -5,11 +5,13 @@
 #include "InputManager.h"
 #include "PhysEntity.h"
 #include "PlatformManager.h"
+#include "Camera.h"
 
 using namespace SDLFramework;
 
 class Player : public PhysEntity {
 private:
+	Camera* mCamera;
 	Timer * mTimer;
 	InputManager * mInput;
 	AudioManager * mAudio;

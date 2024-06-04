@@ -102,8 +102,9 @@ namespace SDLFramework {
 		Graphics::Release();
 		mGraphics = nullptr;
 
-		PlatformManager::Release();
-		mPlatformManager = nullptr;
+		//TODO: Update Platform Manager's Deconstructor to fix nullptr issues.
+		//PlatformManager::Release();
+		//mPlatformManager = nullptr;
 
 		Camera::Release();
 		mCamera = nullptr;

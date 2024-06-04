@@ -37,6 +37,8 @@ namespace SDLFramework {
 	}
 
 	void Graphics::Release() {
+		Camera::Release();
+
 		delete sInstance;
 		sInstance = nullptr;
 		sInitialized = false;
@@ -44,12 +46,6 @@ namespace SDLFramework {
 
 	bool Graphics::Initialized() {
 		return sInitialized;
-	}
-
-	void Graphics::SetCameraPosition(float x, float y) {
-		mCameraX = x;
-		mCameraY = y;
-		//std::cout << "Camera Position: " << mCameraX << ", " << mCameraY << std::endl;
 	}
 
 	SDL_Texture* Graphics::LoadTexture(std::string path) {
@@ -114,16 +110,19 @@ namespace SDLFramework {
 	}
 
 	void Graphics::DrawTexture(SDL_Texture* tex, SDL_Rect* srcRect, SDL_Rect* dstRect, float angle, SDL_RendererFlip flip) {
-		// Apply camera transformation
-		if (mCameraX != 0.0f || mCameraY != 0.0f) {
-			SDL_Rect adjustedDstRect = *dstRect;
-			adjustedDstRect.x -= static_cast<int>(mCameraX);
-			adjustedDstRect.y -= static_cast<int>(mCameraY);
-			SDL_RenderCopyEx(mRenderer, tex, srcRect, &adjustedDstRect, angle, nullptr, flip);
-		}
-		else {
-			SDL_RenderCopyEx(mRenderer, tex, srcRect, dstRect, angle, nullptr, flip);
-		}
+		Vector2 camPos = mCamera->GetCameraPosition();
+
+		float camX = camPos.x;  
+		float camY = camPos.y;
+		float zoom = mCamera->GetZoom();
+
+		SDL_Rect adjustedDstRect = *dstRect;
+		adjustedDstRect.x = static_cast<int>((adjustedDstRect.x - camX) * zoom);
+		adjustedDstRect.y = static_cast<int>((adjustedDstRect.y - camY) * zoom);
+		adjustedDstRect.w = static_cast<int>(adjustedDstRect.w * zoom);
+		adjustedDstRect.h = static_cast<int>(adjustedDstRect.h * zoom);
+
+		SDL_RenderCopyEx(mRenderer, tex, srcRect, &adjustedDstRect, angle, nullptr, flip);
 	}
 
 	void Graphics::DrawLine(float startX, float startY, float endX, float endY) {
@@ -131,12 +130,11 @@ namespace SDLFramework {
 		SDL_GetRenderDrawColor(mRenderer, &color.r, &color.g, &color.b, &color.a);
 		SDL_SetRenderDrawColor(mRenderer, 255, 255, 255, SDL_ALPHA_OPAQUE);
 
-		if (mCameraX != 0.0f || mCameraY != 0.0f) {
-			startX -= mCameraX;
-			startY -= mCameraY;
-			endX -= mCameraX;
-			endY -= mCameraY;
-		}
+		float zoom = mCamera->GetZoom();
+		mCamera->AdjustCoordinates(startX, startY);
+		mCamera->AdjustCoordinates(endX, endY);
+
+		SDL_RenderDrawLine(mRenderer, static_cast<int>(startX * zoom), static_cast<int>(startY * zoom), static_cast<int>(endX * zoom), static_cast<int>(endY * zoom));
 
 		SDL_RenderDrawLine(mRenderer, static_cast<int>(startX), static_cast<int>(startY), static_cast<int>(endX), static_cast<int>(endY));
 		SDL_SetRenderDrawColor(mRenderer, color.r, color.g, color.b, color.a);
@@ -150,7 +148,8 @@ namespace SDLFramework {
 	}
 
 	//private member functions
-	Graphics::Graphics() : mRenderer(nullptr), mCameraX(0.0f), mCameraY(0.0f) {
+	Graphics::Graphics() : mRenderer(nullptr) {
+		mCamera = Camera::Instance();
 		sInitialized = Init();
 	}
 
@@ -158,6 +157,7 @@ namespace SDLFramework {
 		SDL_DestroyRenderer(mRenderer);
 		SDL_DestroyWindow(mWindow);
 
+		mCamera = nullptr;
 		mRenderer = nullptr;
 		mWindow = nullptr;
 

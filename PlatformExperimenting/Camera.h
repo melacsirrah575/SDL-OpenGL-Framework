@@ -15,7 +15,8 @@ namespace SDLFramework {
 		float mZoom;
 		float mSmoothingFactor;
 		float mZoomLerpFactor;
-
+		
+		//bool mShouldMoveWithTarget;
 
 		GameEntity* mTarget;
 		Timer* mTimer;
@@ -42,6 +43,9 @@ namespace SDLFramework {
 		void SetHardZoom(float zoom); //Hard Zoom Effect
 		void SetSmoothZoom(float zoom); //Smooth Zoom Effect
 		void AdjustCoordinates(float& x, float& y);
+
+		//bool GetShouldMoveWithTarget();
+		//void SetShouldMoveWithTarget(bool value);
 
 		void Update();
 	};
