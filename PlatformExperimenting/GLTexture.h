@@ -12,7 +12,7 @@ namespace SDLFramework {
 		GLuint FilterMag, FilterMin;
 
 		int Mode;
-		bool Rendererd;
+		bool Rendered;
 		bool ShouldScroll;
 		void* Data;
 
