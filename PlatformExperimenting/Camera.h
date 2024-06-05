@@ -37,13 +37,14 @@ namespace SDLFramework {
 
 		GameEntity* GetTarget();
 		//When we call SetTarget, GLGraphics handles moving the camera based on the target's position
+		//Otherwise, our Player class is determining when to move the camera
 		void SetTarget(GameEntity* target);
 		void RemoveTarget();
 		void PositionToCurrentTarget();
 
 		float GetZoom();
-		void SetHardZoom(float zoom); //Hard Zoom Effect
-		void SetSmoothZoom(float zoom); //Smooth Zoom Effect
+		void SetHardZoom(float zoom); //Hard Zoom Effect (zooms immediately)
+		void SetSmoothZoom(float zoom); //Smooth Zoom Effect (zooms over time)
 		void AdjustCoordinates(float& x, float& y);
 
 		bool GetIsTargetingAnEntity();

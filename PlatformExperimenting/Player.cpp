@@ -231,6 +231,10 @@ void Player::Update() {
 		mCamera->SetTarget(this);
 	}
 
+	if (InputManager::Instance()->KeyPressed(SDL_SCANCODE_O)) {
+		mCamera->RemoveTarget();
+	}
+
 	HandleMovement();
 }
 
