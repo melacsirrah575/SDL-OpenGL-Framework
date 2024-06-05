@@ -7,6 +7,8 @@
 
 Player::Player() {
 	mCamera = Camera::Instance();
+	//mCamera->SetTarget(this);
+
 	mTimer = Timer::Instance();
 	mInput = InputManager::Instance();
 	mAudio = AudioManager::Instance();
@@ -104,30 +106,33 @@ void Player::HandleJumping() {
 void Player::HandleBoundsCheckingAndCameraScrolling() {
 	Vector2 pos = Position(Local);
 	if (pos.x <= mXScrollBoundryOffset.x) {
-		std::cout << "Old Camera Pos: " << mCamera->GetCameraPosition().x << ", " << mCamera->GetCameraPosition().y << std::endl;
-		mCamera->SetCameraPosition(
-			mCamera->GetCameraPosition().x - mCamera->GetMoveSpeed() * mTimer->DeltaTime(),
-			mCamera->GetCameraPosition().y);
-
-		std::cout << "New Camera Pos: " << mCamera->GetCameraPosition().x << ", " << mCamera->GetCameraPosition().y << std::endl;
+		if (!mCamera->GetIsTargetingAnEntity()) {
+			mCamera->SetCameraPosition(
+				mCamera->GetCameraPosition().x - mCamera->GetMoveSpeed() * mTimer->DeltaTime(),
+				mCamera->GetCameraPosition().y);
+		}
 
 		mXScrollBoundryOffset.x -= mMoveSpeed * mTimer->DeltaTime();
 		mXScrollBoundryOffset.y -= mMoveSpeed * mTimer->DeltaTime();
 
 	}
 	else if (pos.x >= mXScrollBoundryOffset.y) {
-		mCamera->SetCameraPosition(
-			mCamera->GetCameraPosition().x + mCamera->GetMoveSpeed() * mTimer->DeltaTime(),
-			mCamera->GetCameraPosition().y);
+		if (!mCamera->GetIsTargetingAnEntity()) {
+			mCamera->SetCameraPosition(
+				mCamera->GetCameraPosition().x + mCamera->GetMoveSpeed() * mTimer->DeltaTime(),
+				mCamera->GetCameraPosition().y);
+		}
 
 		mXScrollBoundryOffset.x += mMoveSpeed * mTimer->DeltaTime();
 		mXScrollBoundryOffset.y += mMoveSpeed * mTimer->DeltaTime();
 	}
 	if (pos.y <= mYScrollBoundryOffset.x) {
-		mCamera->SetCameraPosition(
-			mCamera->GetCameraPosition().x,
-			mCamera->GetCameraPosition().y - mCamera->GetMoveSpeed() * mTimer->DeltaTime());
+		if (!mCamera->GetIsTargetingAnEntity()) {
+			mCamera->SetCameraPosition(
+				mCamera->GetCameraPosition().x,
+				mCamera->GetCameraPosition().y - mCamera->GetMoveSpeed() * mTimer->DeltaTime());
 
+		}
 		mYScrollBoundryOffset.x -= mMoveSpeed * mTimer->DeltaTime();
 		mYScrollBoundryOffset.y -= mMoveSpeed * mTimer->DeltaTime();
 
@@ -135,10 +140,11 @@ void Player::HandleBoundsCheckingAndCameraScrolling() {
 	else if (pos.y >= mYScrollBoundryOffset.y) {
 
 		if (mYScrollBoundryOffset.y + mYOffset < Graphics::SCREEN_HEIGHT) {
-			mCamera->SetCameraPosition(
-				mCamera->GetCameraPosition().x,
-				mCamera->GetCameraPosition().y + mCamera->GetMoveSpeed() * mTimer->DeltaTime());
-
+			if (!mCamera->GetIsTargetingAnEntity()) {
+				mCamera->SetCameraPosition(
+					mCamera->GetCameraPosition().x,
+					mCamera->GetCameraPosition().y + mCamera->GetMoveSpeed() * mTimer->DeltaTime());
+			}
 			mYScrollBoundryOffset.x += mMoveSpeed * mTimer->DeltaTime();
 			mYScrollBoundryOffset.y += mMoveSpeed * mTimer->DeltaTime();
 		}
@@ -220,6 +226,10 @@ bool Player::GetWasHit() const {
 }
 
 void Player::Update() {
+
+	if (InputManager::Instance()->KeyPressed(SDL_SCANCODE_P)) {
+		mCamera->SetTarget(this);
+	}
 
 	HandleMovement();
 }

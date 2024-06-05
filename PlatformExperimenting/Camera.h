@@ -16,7 +16,7 @@ namespace SDLFramework {
 		float mSmoothingFactor;
 		float mZoomLerpFactor;
 		
-		//bool mShouldMoveWithTarget;
+		bool mIsTargetingAnEntity;
 
 		GameEntity* mTarget;
 		Timer* mTimer;
@@ -36,7 +36,9 @@ namespace SDLFramework {
 		void SetMoveSpeed(float speed);
 
 		GameEntity* GetTarget();
+		//When we call SetTarget, GLGraphics handles moving the camera based on the target's position
 		void SetTarget(GameEntity* target);
+		void RemoveTarget();
 		void PositionToCurrentTarget();
 
 		float GetZoom();
@@ -44,8 +46,7 @@ namespace SDLFramework {
 		void SetSmoothZoom(float zoom); //Smooth Zoom Effect
 		void AdjustCoordinates(float& x, float& y);
 
-		//bool GetShouldMoveWithTarget();
-		//void SetShouldMoveWithTarget(bool value);
+		bool GetIsTargetingAnEntity();
 
 		void Update();
 	};

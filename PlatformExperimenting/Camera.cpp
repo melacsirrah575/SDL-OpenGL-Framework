@@ -23,15 +23,13 @@ namespace SDLFramework {
 		mMoveSpeed = 300.0f;
 		mZoom = 1.0f;
 		mSmoothingFactor = 1.0f;
-		mZoomLerpFactor = 0.1f;
+		mZoomLerpFactor = 1.0f;
 
-		//mShouldMoveWithTarget = true;
-
+		mIsTargetingAnEntity = false;
 		mTarget = nullptr;
 	}
 
 	Camera::~Camera() {
-		delete mTarget;
 		mTarget = nullptr;
 	}
 
@@ -63,6 +61,11 @@ namespace SDLFramework {
 
 	void Camera::SetTarget(GameEntity* target) {
 		mTarget = target;
+		mIsTargetingAnEntity = true;
+	}
+
+	void Camera::RemoveTarget() {
+		mTarget = nullptr;
 	}
 
 	void Camera::PositionToCurrentTarget() {
@@ -95,17 +98,9 @@ namespace SDLFramework {
 		y = (y - mY) * mZoom;
 	}
 
-	// Been debating on whether I want the Camera to handle its position regarding its target
-	// OR whether I want the target to tell the Camera when to update
-	// For now, I am doing the latter but am wanting to keep this code in here in case I/we change our minds
-	// 
-	//bool Camera::GetShouldMoveWithTarget() {
-	//	return mShouldMoveWithTarget;
-	//}
-
-	//void Camera::SetShouldMoveWithTarget(bool value) {
-	//	mShouldMoveWithTarget = value;
-	//}
+	bool Camera::GetIsTargetingAnEntity() {
+		return mIsTargetingAnEntity;
+	}
 
 	void Camera::Update() {
 		if (std::fabs(mZoom - mSmoothingFactor) > 0.01f) {
@@ -115,8 +110,8 @@ namespace SDLFramework {
 			}
 		}
 
-		//if (mShouldMoveWithTarget) {
-		//	PositionToCurrentTarget();
-		//}
+		if (mTarget == nullptr) {
+			mIsTargetingAnEntity = false;
+		}
 	}
 }

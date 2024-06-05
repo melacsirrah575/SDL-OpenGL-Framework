@@ -1,6 +1,7 @@
 #include "GLGraphics.h"
 #include "AssetManager.h"
 #include "MathHelper.h"
+#include "Camera.h"
 
 #include <GL/glew.h>
 #include <glm.hpp>
@@ -41,8 +42,10 @@ namespace SDLFramework {
 		loc = shaderUtil.GetUniformLocation("translateMatrix");
 		glUniformMatrix4fv(loc, 1, GL_FALSE, &(translateMatrix[0][0]));
 
+		UpdateProjectionMatrix();
 		loc = shaderUtil.GetUniformLocation("proj");
-		glUniformMatrix4fv(loc, 1, GL_FALSE, &(orthoMatrix[0][0]));
+		//We used to be passing orthoMatrix here
+		glUniformMatrix4fv(loc, 1, GL_FALSE, &(projectionMatrix[0][0]));
 
 		glBindBuffer(GL_ARRAY_BUFFER, texture->ID);
 		glEnableVertexAttribArray(0);
@@ -137,11 +140,31 @@ namespace SDLFramework {
 
 		AssetManager::Instance()->LoadShader(vShaderPath.c_str(), fShaderPath.c_str(), nullptr, "Sprite-Default");
 		shaderUtil = AssetManager::Instance()->GetShaderUtil("Sprite-Default");
-		orthoMatrix = glm::ortho(0.0f, (float)SCREEN_WIDTH, (float)SCREEN_HEIGHT, 0.0f, -1.0f, 1.0f);
+		//orthoMatrix = glm::ortho(0.0f, (float)SCREEN_WIDTH, (float)SCREEN_HEIGHT, 0.0f, -1.0f, 1.0f);
+
+		UpdateProjectionMatrix();
 
 		shaderUtil.Use();
 		shaderUtil.SetVector2f("vertexPosition", glm::vec2(0, 0));
-		shaderUtil.SetMatrix4f("proj", orthoMatrix);
+		shaderUtil.SetMatrix4f("proj", projectionMatrix);
+	}
+
+	void GLGraphics::UpdateProjectionMatrix() {
+		float zoom = Camera::Instance()->GetZoom();
+		float halfWidth = SCREEN_WIDTH / (2.0f * zoom);
+		float halfHeight = SCREEN_HEIGHT / (2.0f * zoom);
+
+		if (Camera::Instance()->GetTarget()) {
+			projectionMatrix = glm::ortho(
+				Camera::Instance()->GetTarget()->Position().x - halfWidth, Camera::Instance()->GetTarget()->Position().x + halfWidth,
+				Camera::Instance()->GetTarget()->Position().y + halfHeight, Camera::Instance()->GetTarget()->Position().y - halfHeight,
+				-1.0f, 1.0f);
+		}
+		else {
+			//Safety net but ideally we shouldn't be trying to zoom without a target
+			projectionMatrix = glm::ortho(0.0f, (float)SCREEN_WIDTH / zoom, (float)SCREEN_HEIGHT / zoom, 0.0f, -1.0f, 1.0f);
+		}
+
 	}
 
 	void GLGraphics::ClearBackBuffer() {
