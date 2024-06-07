@@ -13,8 +13,8 @@ namespace SDLFramework {
 		Vector2 pos = texture->Position(GameEntity::Space::World);
 
 		if (shouldScroll) {
-			pos.x -= Camera::Instance()->GetCameraPosition().x;
-			pos.y -= Camera::Instance()->GetCameraPosition().y;
+			pos.x -= Camera::Instance()->Position().x;
+			pos.y -= Camera::Instance()->Position().y;
 		}
 
 		InitRenderData(texture, srcRect, texture->ID, flip);
@@ -150,18 +150,24 @@ namespace SDLFramework {
 	}
 
 	void GLGraphics::UpdateProjectionMatrix() {
-		float zoom = Camera::Instance()->GetZoom();
+		float zoom = Camera::Instance()->Zoom();
 		float halfWidth = SCREEN_WIDTH / (2.0f * zoom);
 		float halfHeight = SCREEN_HEIGHT / (2.0f * zoom);
 
-		if (Camera::Instance()->GetTarget()) {
-			projectionMatrix = glm::ortho(
-				Camera::Instance()->GetTarget()->Position().x - halfWidth, Camera::Instance()->GetTarget()->Position().x + halfWidth,
-				Camera::Instance()->GetTarget()->Position().y + halfHeight, Camera::Instance()->GetTarget()->Position().y - halfHeight,
-				-1.0f, 1.0f);
+		if (Camera::Instance()->Mode() == Camera::CameraMode::DIRECT_FOLLOW) {
+			if (Camera::Instance()->Target()) {
+				projectionMatrix = glm::ortho(
+					Camera::Instance()->Target()->Position().x - halfWidth, Camera::Instance()->Target()->Position().x + halfWidth,
+					Camera::Instance()->Target()->Position().y + halfHeight, Camera::Instance()->Target()->Position().y - halfHeight,
+					-1.0f, 1.0f);
+			}
+			else {
+				//Safety net but there should always be a target in this mode
+				projectionMatrix = glm::ortho(0.0f, (float)SCREEN_WIDTH / zoom, (float)SCREEN_HEIGHT / zoom, 0.0f, -1.0f, 1.0f);
+			}
 		}
-		else {
-			//Safety net but ideally we shouldn't be trying to zoom without a target
+		//TODO: Looks at how to implement Camera zoom feature when target is allowed within bounds
+		else if (Camera::Instance()->Mode() == Camera::CameraMode::WITHIN_BOUNDS) {
 			projectionMatrix = glm::ortho(0.0f, (float)SCREEN_WIDTH / zoom, (float)SCREEN_HEIGHT / zoom, 0.0f, -1.0f, 1.0f);
 		}
 

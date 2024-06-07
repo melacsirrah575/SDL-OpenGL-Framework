@@ -110,11 +110,11 @@ namespace SDLFramework {
 	}
 
 	void Graphics::DrawTexture(SDL_Texture* tex, SDL_Rect* srcRect, SDL_Rect* dstRect, float angle, SDL_RendererFlip flip) {
-		Vector2 camPos = mCamera->GetCameraPosition();
+		Vector2 camPos = mCamera->Position();
 
 		float camX = camPos.x;  
 		float camY = camPos.y;
-		float zoom = mCamera->GetZoom();
+		float zoom = mCamera->Zoom();
 
 		SDL_Rect adjustedDstRect = *dstRect;
 		adjustedDstRect.x = static_cast<int>((adjustedDstRect.x - camX) * zoom);
@@ -130,7 +130,7 @@ namespace SDLFramework {
 		SDL_GetRenderDrawColor(mRenderer, &color.r, &color.g, &color.b, &color.a);
 		SDL_SetRenderDrawColor(mRenderer, 255, 255, 255, SDL_ALPHA_OPAQUE);
 
-		float zoom = mCamera->GetZoom();
+		float zoom = mCamera->Zoom();
 		mCamera->AdjustCoordinates(startX, startY);
 		mCamera->AdjustCoordinates(endX, endY);
 

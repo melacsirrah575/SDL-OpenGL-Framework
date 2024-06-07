@@ -6,8 +6,7 @@
 
 
 Player::Player() {
-	mCamera = Camera::Instance();
-	//mCamera->SetTarget(this);
+	Camera::Instance()->Target(this);
 
 	mTimer = Timer::Instance();
 	mInput = InputManager::Instance();
@@ -76,7 +75,7 @@ void Player::HandleMovement() {
 		HandleJumping();
 	}
 
-	HandleBoundsCheckingAndCameraScrolling();
+	HandleBoundsChecking();
 
 	//Gravity Application
 	if ((!mGrounded || !mIsColliding) && !mPlayerJumped) {
@@ -103,36 +102,20 @@ void Player::HandleJumping() {
 	}
 }
 
-void Player::HandleBoundsCheckingAndCameraScrolling() {
+void Player::HandleBoundsChecking() {
 	Vector2 pos = Position(Local);
 	if (pos.x <= mXScrollBoundryOffset.x) {
-		if (!mCamera->GetIsTargetingAnEntity()) {
-			mCamera->SetCameraPosition(
-				mCamera->GetCameraPosition().x - mCamera->GetMoveSpeed() * mTimer->DeltaTime(),
-				mCamera->GetCameraPosition().y);
-		}
 
 		mXScrollBoundryOffset.x -= mMoveSpeed * mTimer->DeltaTime();
 		mXScrollBoundryOffset.y -= mMoveSpeed * mTimer->DeltaTime();
 
 	}
 	else if (pos.x >= mXScrollBoundryOffset.y) {
-		if (!mCamera->GetIsTargetingAnEntity()) {
-			mCamera->SetCameraPosition(
-				mCamera->GetCameraPosition().x + mCamera->GetMoveSpeed() * mTimer->DeltaTime(),
-				mCamera->GetCameraPosition().y);
-		}
 
 		mXScrollBoundryOffset.x += mMoveSpeed * mTimer->DeltaTime();
 		mXScrollBoundryOffset.y += mMoveSpeed * mTimer->DeltaTime();
 	}
 	if (pos.y <= mYScrollBoundryOffset.x) {
-		if (!mCamera->GetIsTargetingAnEntity()) {
-			mCamera->SetCameraPosition(
-				mCamera->GetCameraPosition().x,
-				mCamera->GetCameraPosition().y - mCamera->GetMoveSpeed() * mTimer->DeltaTime());
-
-		}
 		mYScrollBoundryOffset.x -= mMoveSpeed * mTimer->DeltaTime();
 		mYScrollBoundryOffset.y -= mMoveSpeed * mTimer->DeltaTime();
 
@@ -140,17 +123,13 @@ void Player::HandleBoundsCheckingAndCameraScrolling() {
 	else if (pos.y >= mYScrollBoundryOffset.y) {
 
 		if (mYScrollBoundryOffset.y + mYOffset < Graphics::SCREEN_HEIGHT) {
-			if (!mCamera->GetIsTargetingAnEntity()) {
-				mCamera->SetCameraPosition(
-					mCamera->GetCameraPosition().x,
-					mCamera->GetCameraPosition().y + mCamera->GetMoveSpeed() * mTimer->DeltaTime());
-			}
 			mYScrollBoundryOffset.x += mMoveSpeed * mTimer->DeltaTime();
 			mYScrollBoundryOffset.y += mMoveSpeed * mTimer->DeltaTime();
 		}
 		else {
-			mCamera->SetCameraPosition(
-				mCamera->GetCameraPosition().x, 0);
+			//Prevents player from falling below the bottom of the screen.
+			//Can be adjusted as desired or removed entirely.
+			//Could also be refactored into a kill plane.
 			mYScrollBoundryOffset.y = Graphics::SCREEN_HEIGHT;
 			if (pos.y >= Graphics::SCREEN_HEIGHT) {
 				mGrounded = true;
@@ -228,11 +207,11 @@ bool Player::GetWasHit() const {
 void Player::Update() {
 
 	if (InputManager::Instance()->KeyPressed(SDL_SCANCODE_P)) {
-		mCamera->SetTarget(this);
+		Camera::Instance()->Target(this);
 	}
 
 	if (InputManager::Instance()->KeyPressed(SDL_SCANCODE_O)) {
-		mCamera->RemoveTarget();
+		Camera::Instance()->RemoveTarget();
 	}
 
 	HandleMovement();

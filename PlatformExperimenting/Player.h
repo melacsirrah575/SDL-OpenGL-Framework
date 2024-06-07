@@ -11,7 +11,6 @@ using namespace SDLFramework;
 
 class Player : public PhysEntity {
 private:
-	Camera* mCamera;
 	Timer * mTimer;
 	InputManager * mInput;
 	AudioManager * mAudio;
@@ -42,7 +41,7 @@ private:
 private:
 	void HandleMovement();
 	void HandleJumping();
-	void HandleBoundsCheckingAndCameraScrolling();
+	void HandleBoundsChecking();
 
 public:
 	Player();

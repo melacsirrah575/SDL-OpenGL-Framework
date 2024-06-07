@@ -1,4 +1,5 @@
 #include "Camera.h"
+#include "Graphics.h"
 
 namespace SDLFramework {
 	Camera* Camera::sInstance = nullptr;
@@ -25,6 +26,9 @@ namespace SDLFramework {
 		mSmoothingFactor = 1.0f;
 		mZoomLerpFactor = 1.0f;
 
+		mXTargetBounds = Vector2(Graphics::SCREEN_WIDTH * 0.1, Graphics::SCREEN_WIDTH * 0.9);
+		mYTargetBounds = Vector2(Graphics::SCREEN_HEIGHT * 0.1, Graphics::SCREEN_HEIGHT * 0.9);
+
 		mIsTargetingAnEntity = false;
 		mTarget = nullptr;
 	}
@@ -33,33 +37,41 @@ namespace SDLFramework {
 		mTarget = nullptr;
 	}
 
-	Vector2 Camera::GetCameraPosition() {
+	void Camera::Mode(CameraMode mode) {
+		mCurrentMode = mode;
+	}
+
+	Camera::CameraMode Camera::Mode() {
+		return mCurrentMode;
+	}
+
+	Vector2 Camera::Position() {
 		return Vector2(mX, mY);
 	}
 
-	void Camera::SetCameraPosition(Vector2 position) {
+	void Camera::Position(Vector2 position) {
 		mX = position.x;
 		mY = position.y;
 	}
 
-	void Camera::SetCameraPosition(float x, float y) {
+	void Camera::Position(float x, float y) {
 		mX = x;
 		mY = y;
 	}
 
-	float Camera::GetMoveSpeed() {
+	float Camera::MoveSpeed() {
 		return mMoveSpeed;
 	}
 
-	void Camera::SetMoveSpeed(float moveSpeed) {
+	void Camera::MoveSpeed(float moveSpeed) {
 		mMoveSpeed = moveSpeed;
 	}
 
-	GameEntity* Camera::GetTarget() {
+	GameEntity* Camera::Target() {
 		return mTarget;
 	}
 
-	void Camera::SetTarget(GameEntity* target) {
+	void Camera::Target(GameEntity* target) {
 		mTarget = target;
 		mIsTargetingAnEntity = true;
 	}
@@ -79,17 +91,17 @@ namespace SDLFramework {
 		}
 	}
 
-	float Camera::GetZoom() {
+	float Camera::Zoom() {
 		return mZoom;
 	}
 
-	void Camera::SetHardZoom(float zoom) {
+	void Camera::HardZoom(float zoom) {
 		mZoom = zoom;
 		//Wanting to ensure that the smooth zoom doesn't override the hard zoom
 		mSmoothingFactor = zoom;
 	}
 
-	void Camera::SetSmoothZoom(float zoom) {
+	void Camera::SmoothZoom(float zoom) {
 		mSmoothingFactor = zoom;
 	}
 
@@ -98,7 +110,7 @@ namespace SDLFramework {
 		y = (y - mY) * mZoom;
 	}
 
-	bool Camera::GetIsTargetingAnEntity() {
+	bool Camera::IsTargetingAnEntity() {
 		return mIsTargetingAnEntity;
 	}
 
@@ -112,6 +124,44 @@ namespace SDLFramework {
 
 		if (mTarget == nullptr) {
 			mIsTargetingAnEntity = false;
+		}
+
+		if (mCurrentMode == CameraMode::WITHIN_BOUNDS) {
+			if (mTarget) {
+				HandleCameraMovement();
+			}
+		}
+	}
+
+	void Camera::HandleCameraMovement() {
+		Vector2 targetPos = mTarget->Position(GameEntity::Space::Local);
+
+		//Checking X-Bounds
+		if (targetPos.x <= mXTargetBounds.x) {
+			Position(Position().x - mMoveSpeed * mTimer->DeltaTime(), Position().y);
+
+			mXTargetBounds.x -= mMoveSpeed * mTimer->DeltaTime();
+			mXTargetBounds.y -= mMoveSpeed * mTimer->DeltaTime();
+		}
+		else if (targetPos.x > mXTargetBounds.y) {
+			Position(Position().x + mMoveSpeed * mTimer->DeltaTime(), Position().y);
+
+			mXTargetBounds.x += mMoveSpeed * mTimer->DeltaTime();
+			mXTargetBounds.y += mMoveSpeed * mTimer->DeltaTime();
+		}
+
+		//Checking Y-Bounds
+		if (targetPos.y < mYTargetBounds.x) {
+			Position(Position().x, Position().y - mMoveSpeed * mTimer->DeltaTime());
+
+			mYTargetBounds.x -= mMoveSpeed * mTimer->DeltaTime();
+			mYTargetBounds.y -= mMoveSpeed * mTimer->DeltaTime();
+		}
+		else if (targetPos.y > mXTargetBounds.y) {
+			Position(Position().x, Position().y + mMoveSpeed * mTimer->DeltaTime());
+
+			mYTargetBounds.x += mMoveSpeed * mTimer->DeltaTime();
+			mYTargetBounds.y += mMoveSpeed * mTimer->DeltaTime();
 		}
 	}
 }

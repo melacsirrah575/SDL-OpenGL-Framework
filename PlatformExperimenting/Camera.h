@@ -4,10 +4,24 @@
 #include "iostream"
 #include "Timer.h"
 
+//								*****Important*****
+// Camera should *ALWAYS* have a target if we want it our camera to move
+
 namespace SDLFramework {
 	class Camera {
+	public:
+		//GLGraphics.cpp handles DIRECT_FOLLOW movement with projectionMatrix
+		//We handle WITHIN_BOUNDS movement
+
+		enum CameraMode {
+			DIRECT_FOLLOW,
+			WITHIN_BOUNDS
+		};
+
 	private:
 		static Camera* sInstance;
+
+		CameraMode mCurrentMode = WITHIN_BOUNDS;
 
 		float mX;
 		float mY;
@@ -18,9 +32,13 @@ namespace SDLFramework {
 		
 		bool mIsTargetingAnEntity;
 
+		Vector2 mXTargetBounds;
+		Vector2 mYTargetBounds;
+
 		GameEntity* mTarget;
 		Timer* mTimer;
 
+		void HandleCameraMovement();
 	public:
 		static Camera* Instance();
 		static void Release();
@@ -28,26 +46,27 @@ namespace SDLFramework {
 		Camera();
 		~Camera();
 
-		Vector2 GetCameraPosition();
-		void SetCameraPosition(Vector2 position);
-		void SetCameraPosition(float x, float y);
+		void Mode(CameraMode mode);
+		CameraMode Mode();
 
-		float GetMoveSpeed();
-		void SetMoveSpeed(float speed);
+		Vector2 Position();
+		void Position(Vector2 position);
+		void Position(float x, float y);
 
-		GameEntity* GetTarget();
-		//When we call SetTarget, GLGraphics handles moving the camera based on the target's position
-		//Otherwise, our Player class is determining when to move the camera
-		void SetTarget(GameEntity* target);
+		float MoveSpeed();
+		void MoveSpeed(float speed);
+
+		GameEntity* Target();
+		void Target(GameEntity* target);
 		void RemoveTarget();
 		void PositionToCurrentTarget();
 
-		float GetZoom();
-		void SetHardZoom(float zoom); //Hard Zoom Effect (zooms immediately)
-		void SetSmoothZoom(float zoom); //Smooth Zoom Effect (zooms over time)
+		float Zoom();
+		void HardZoom(float zoom); //Hard Zoom Effect (zooms immediately)
+		void SmoothZoom(float zoom); //Smooth Zoom Effect (zooms over time)
 		void AdjustCoordinates(float& x, float& y);
 
-		bool GetIsTargetingAnEntity();
+		bool IsTargetingAnEntity();
 
 		void Update();
 	};
