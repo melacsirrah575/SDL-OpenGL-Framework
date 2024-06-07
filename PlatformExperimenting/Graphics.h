@@ -11,6 +11,8 @@
 #endif
 #include <iostream>
 #include <string>
+#include "Camera.h"
+
 
 namespace SDLFramework {
 
@@ -18,14 +20,17 @@ namespace SDLFramework {
 
 	class Graphics
 	{
+	private:
+		Camera* mCamera;
+
 	public:
 		enum class RenderMode {
 			SDL,
 			GL
 		};
 
-		static const short SCREEN_WIDTH = 896;
-		static const short SCREEN_HEIGHT = 1024;
+		static const short SCREEN_WIDTH = 1024;
+		static const short SCREEN_HEIGHT = 896;
 		const char* WINDOW_TITLE = "NAME ME!";
 
 	protected:
@@ -38,18 +43,11 @@ namespace SDLFramework {
 
 		SDL_GLContext mGLContext;
 
-		float mCameraX;
-		float mCameraY;
-
 	public:
 		static void SetMode(RenderMode mode);
 		static Graphics* Instance();
 		static void Release();
 		static bool Initialized();
-
-		void SetCameraPosition(float x, float y);
-		float GetCameraX() const { return mCameraX; }
-		float GetCameraY() const { return mCameraY; }
 
 		SDL_Texture* LoadTexture(std::string path);
 		SDL_Surface* LoadSurface(std::string path);

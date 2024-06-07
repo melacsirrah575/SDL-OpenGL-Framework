@@ -5,6 +5,7 @@
 #include "InputManager.h"
 #include "PhysEntity.h"
 #include "PlatformManager.h"
+#include "Camera.h"
 
 using namespace SDLFramework;
 
@@ -40,7 +41,7 @@ private:
 private:
 	void HandleMovement();
 	void HandleJumping();
-	void HandleBoundsCheckingAndCameraScrolling();
+	void HandleBoundsChecking();
 
 public:
 	Player();

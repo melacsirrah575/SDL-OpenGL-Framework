@@ -29,7 +29,14 @@ void ScreenManager::Update() {
 		break;
 	case Play:
 		mPlayScreen->Update();
-		if (mPlayScreen->GameOver() || mInput->KeyPressed(SDL_SCANCODE_ESCAPE)) {
+
+#ifdef _DEBUG
+		if (mInput->KeyPressed(SDL_SCANCODE_ESCAPE)) {
+			mCurrentScreen = Start;
+		}
+#endif
+
+		if (mPlayScreen->GameOver()) {
 			mCurrentScreen = Start;
 		}
 		break;

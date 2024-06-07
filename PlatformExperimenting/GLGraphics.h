@@ -6,15 +6,15 @@
 
 namespace SDLFramework {
 
-	class GLGraphics
-		: public Graphics {
+	class GLGraphics : public Graphics {
 		friend class Graphics;
 
 	private:
 		SDL_GLContext mGLContext;
 		ShaderUtil shaderUtil;
 
-		glm::mat4 orthoMatrix;
+		//glm::mat4 orthoMatrix;
+		glm::mat4 projectionMatrix;
 
 	public:
 		void InitRenderData(Texture* texture, SDL_Rect* srcRect, GLuint quadVAO, SDL_RendererFlip flip = SDL_FLIP_NONE);
@@ -25,6 +25,8 @@ namespace SDLFramework {
 
 		virtual void ClearBackBuffer() override;
 		virtual void Render() override;
+
+		void UpdateProjectionMatrix();
 
 	private:
 		//Inherited from Graphics

@@ -5,6 +5,7 @@
 #include "ScreenManager.h"
 #include "PhysicsManager.h"
 #include "PlatformManager.h"
+#include "Camera.h"
 
 namespace SDLFramework {
 
@@ -16,6 +17,7 @@ namespace SDLFramework {
 
 		bool mQuit;
 		Graphics* mGraphics;
+		Camera* mCamera;
 		AssetManager* mAssetManager;
 		InputManager* mInputManager;
 		AudioManager* mAudioManager;

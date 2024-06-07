@@ -52,6 +52,23 @@ bool PlayScreen::GameOver() {
 }
 
 void PlayScreen::Update() {
+#ifdef _DEBUG
+	if (InputManager::Instance()->KeyPressed(SDL_SCANCODE_X)) {
+		Camera::Instance()->HardZoom(1.5f);
+	}
+
+	if (InputManager::Instance()->KeyPressed(SDL_SCANCODE_Z)) {
+		Camera::Instance()->SmoothZoom(1.5f);
+	}
+
+	if (InputManager::Instance()->KeyPressed(SDL_SCANCODE_C)) {
+		Camera::Instance()->HardZoom(1.0f);
+	}
+
+	if (InputManager::Instance()->KeyPressed(SDL_SCANCODE_V)) {
+		Camera::Instance()->SmoothZoom(1.0f);
+	}
+#endif
 
 	//Temp Solution until you code HOW the game starts
 	if (!mGameStarted) {
