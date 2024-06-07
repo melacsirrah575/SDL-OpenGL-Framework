@@ -154,7 +154,7 @@ namespace SDLFramework {
 		float halfWidth = SCREEN_WIDTH / (2.0f * zoom);
 		float halfHeight = SCREEN_HEIGHT / (2.0f * zoom);
 
-		if (Camera::Instance()->Mode() == Camera::CameraMode::DIRECT_FOLLOW) {
+		if (Camera::Instance()->Mode() == Camera::CameraModes::DIRECT_FOLLOW) {
 			if (Camera::Instance()->Target()) {
 				projectionMatrix = glm::ortho(
 					Camera::Instance()->Target()->Position().x - halfWidth, Camera::Instance()->Target()->Position().x + halfWidth,
@@ -167,7 +167,7 @@ namespace SDLFramework {
 			}
 		}
 		//TODO: Looks at how to implement Camera zoom feature when target is allowed within bounds
-		else if (Camera::Instance()->Mode() == Camera::CameraMode::WITHIN_BOUNDS) {
+		else if (Camera::Instance()->Mode() == Camera::CameraModes::WITHIN_BOUNDS) {
 			projectionMatrix = glm::ortho(0.0f, (float)SCREEN_WIDTH / zoom, (float)SCREEN_HEIGHT / zoom, 0.0f, -1.0f, 1.0f);
 		}
 

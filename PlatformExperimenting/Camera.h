@@ -13,7 +13,7 @@ namespace SDLFramework {
 		//GLGraphics.cpp handles DIRECT_FOLLOW movement with projectionMatrix
 		//We handle WITHIN_BOUNDS movement
 
-		enum CameraMode {
+		enum CameraModes {
 			DIRECT_FOLLOW,
 			WITHIN_BOUNDS
 		};
@@ -21,7 +21,7 @@ namespace SDLFramework {
 	private:
 		static Camera* sInstance;
 
-		CameraMode mCurrentMode = WITHIN_BOUNDS;
+		CameraModes mCurrentMode = DIRECT_FOLLOW;
 
 		float mX;
 		float mY;
@@ -46,14 +46,14 @@ namespace SDLFramework {
 		Camera();
 		~Camera();
 
-		void Mode(CameraMode mode);
-		CameraMode Mode();
+		void Mode(CameraModes mode);
+		CameraModes Mode() const;
 
 		Vector2 Position();
 		void Position(Vector2 position);
 		void Position(float x, float y);
 
-		float MoveSpeed();
+		float MoveSpeed() const;
 		void MoveSpeed(float speed);
 
 		GameEntity* Target();
@@ -61,12 +61,12 @@ namespace SDLFramework {
 		void RemoveTarget();
 		void PositionToCurrentTarget();
 
-		float Zoom();
+		float Zoom() const;
 		void HardZoom(float zoom); //Hard Zoom Effect (zooms immediately)
 		void SmoothZoom(float zoom); //Smooth Zoom Effect (zooms over time)
-		void AdjustCoordinates(float& x, float& y);
+		void AdjustCoordinates(float& x, float& y) const;
 
-		bool IsTargetingAnEntity();
+		bool IsTargetingAnEntity() const;
 
 		void Update();
 	};

@@ -205,7 +205,7 @@ bool Player::GetWasHit() const {
 }
 
 void Player::Update() {
-
+#ifdef _DEBUG
 	if (InputManager::Instance()->KeyPressed(SDL_SCANCODE_P)) {
 		Camera::Instance()->Target(this);
 	}
@@ -213,6 +213,7 @@ void Player::Update() {
 	if (InputManager::Instance()->KeyPressed(SDL_SCANCODE_O)) {
 		Camera::Instance()->RemoveTarget();
 	}
+#endif
 
 	HandleMovement();
 }

@@ -37,11 +37,11 @@ namespace SDLFramework {
 		mTarget = nullptr;
 	}
 
-	void Camera::Mode(CameraMode mode) {
+	void Camera::Mode(CameraModes mode) {
 		mCurrentMode = mode;
 	}
 
-	Camera::CameraMode Camera::Mode() {
+	Camera::CameraModes Camera::Mode() const {
 		return mCurrentMode;
 	}
 
@@ -59,7 +59,7 @@ namespace SDLFramework {
 		mY = y;
 	}
 
-	float Camera::MoveSpeed() {
+	float Camera::MoveSpeed() const {
 		return mMoveSpeed;
 	}
 
@@ -91,7 +91,7 @@ namespace SDLFramework {
 		}
 	}
 
-	float Camera::Zoom() {
+	float Camera::Zoom() const {
 		return mZoom;
 	}
 
@@ -105,12 +105,12 @@ namespace SDLFramework {
 		mSmoothingFactor = zoom;
 	}
 
-	void Camera::AdjustCoordinates(float& x, float& y) {
+	void Camera::AdjustCoordinates(float& x, float& y) const {
 		x = (x - mX) * mZoom;
 		y = (y - mY) * mZoom;
 	}
 
-	bool Camera::IsTargetingAnEntity() {
+	bool Camera::IsTargetingAnEntity() const {
 		return mIsTargetingAnEntity;
 	}
 
@@ -126,7 +126,7 @@ namespace SDLFramework {
 			mIsTargetingAnEntity = false;
 		}
 
-		if (mCurrentMode == CameraMode::WITHIN_BOUNDS) {
+		if (mCurrentMode == CameraModes::WITHIN_BOUNDS) {
 			if (mTarget) {
 				HandleCameraMovement();
 			}
