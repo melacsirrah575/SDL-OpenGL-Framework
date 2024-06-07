@@ -27,6 +27,8 @@ source distribution.
 
 //flexible logging class, based on code at https://github.com/fallahn/xygine
 
+#pragma warning(disable : 4996)
+
 #ifndef TMXLITE_LOGGER_HPP_
 #define TMXLITE_LOGGER_HPP_
 

@@ -77,7 +77,7 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)GL\glm;$(ProjectDir)GL\glew\include;$(ProjectDir)SDL2\SDL2\include;$(ProjectDir)SDL2\SDL2_image\include;$(ProjectDir)SDL2\SDL2_ttf\include;$(ProjectDir)SDL2\SDL2_mixer\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Libraries\OpenGL\glm;$(SolutionDir)Libraries\OpenGL\glew\include;$(SolutionDir)Libraries\SDL2\SDL2\include;$(SolutionDir)Libraries\SDL2\SDL2_image\include;$(SolutionDir)Libraries\SDL2\SDL2_ttf\include;$(SolutionDir)Libraries\SDL2\SDL2_mixer\include;$(SolutionDir)\Libraries\tmxlite\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <AdditionalLibraryDirectories>$(ProjectDir)GL\glew\lib\x86;$(ProjectDir)SDL2\SDL2\lib\x86;$(ProjectDir)SDL2\SDL2_image\lib\x86;$(ProjectDir)SDL2\SDL2_ttf\lib\x86;$(ProjectDir)SDL2\SDL2_mixer\lib\x86;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
@@ -96,7 +96,7 @@ xcopy "$(ProjectDir)..\Data\*" "$(OutDir)Data\" /y /s</Command>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)Libraries\OpenGL\glm;$(SolutionDir)Libraries\OpenGL\glew\include;$(SolutionDir)Libraries\SDL2\SDL2\include;$(SolutionDir)Libraries\SDL2\SDL2_image\include;$(SolutionDir)Libraries\SDL2\SDL2_ttf\include;$(SolutionDir)Libraries\SDL2\SDL2_mixer\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Libraries\OpenGL\glm;$(SolutionDir)Libraries\OpenGL\glew\include;$(SolutionDir)Libraries\SDL2\SDL2\include;$(SolutionDir)Libraries\SDL2\SDL2_image\include;$(SolutionDir)Libraries\SDL2\SDL2_ttf\include;$(SolutionDir)Libraries\SDL2\SDL2_mixer\include;$(SolutionDir)\Libraries\tmxlite\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <AdditionalLibraryDirectories>$(SolutionDir)Libraries\OpenGL\glew\lib\Release\x64;$(SolutionDir)Libraries\SDL2\SDL2\lib\x64;$(SolutionDir)Libraries\SDL2\SDL2_image\lib\x64;$(SolutionDir)Libraries\SDL2\SDL2_ttf\lib\x64;$(SolutionDir)Libraries\SDL2\SDL2_mixer\lib\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
@@ -117,7 +117,7 @@ xcopy "$(ProjectDir)..\Data\*" "$(OutDir)Data\" /y /s</Command>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)GL\glm;$(ProjectDir)GL\glew\include;$(ProjectDir)SDL2\SDL2\include;$(ProjectDir)SDL2\SDL2_image\include;$(ProjectDir)SDL2\SDL2_ttf\include;$(ProjectDir)SDL2\SDL2_mixer\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Libraries\OpenGL\glm;$(SolutionDir)Libraries\OpenGL\glew\include;$(SolutionDir)Libraries\SDL2\SDL2\include;$(SolutionDir)Libraries\SDL2\SDL2_image\include;$(SolutionDir)Libraries\SDL2\SDL2_ttf\include;$(SolutionDir)Libraries\SDL2\SDL2_mixer\include;$(SolutionDir)\Libraries\tmxlite\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -140,7 +140,7 @@ xcopy "$(ProjectDir)..\Data\*" "$(OutDir)Data\" /y /s</Command>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)Libraries\OpenGL\glm;$(SolutionDir)Libraries\OpenGL\glew\include;$(SolutionDir)Libraries\SDL2\SDL2\include;$(SolutionDir)Libraries\SDL2\SDL2_image\include;$(SolutionDir)Libraries\SDL2\SDL2_ttf\include;$(SolutionDir)Libraries\SDL2\SDL2_mixer\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Libraries\OpenGL\glm;$(SolutionDir)Libraries\OpenGL\glew\include;$(SolutionDir)Libraries\SDL2\SDL2\include;$(SolutionDir)Libraries\SDL2\SDL2_image\include;$(SolutionDir)Libraries\SDL2\SDL2_ttf\include;$(SolutionDir)Libraries\SDL2\SDL2_mixer\include;$(SolutionDir)\Libraries\tmxlite\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -173,7 +173,7 @@ xcopy "$(ProjectDir)..\Data\*" "$(OutDir)Data\" /y /s</Command>
     <ClCompile Include="Graphics.cpp" />
     <ClCompile Include="InputManager.cpp" />
     <ClCompile Include="Level.cpp" />
-    <ClCompile Include="main.cpp" />
+    <ClCompile Include="MapManager.cpp" />
     <ClCompile Include="PhysEntity.cpp" />
     <ClCompile Include="PhysicsManager.cpp" />
     <ClCompile Include="Platform.cpp" />
@@ -190,6 +190,7 @@ xcopy "$(ProjectDir)..\Data\*" "$(OutDir)Data\" /y /s</Command>
     <ClCompile Include="tinyxml2.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\Libraries\tmxlite\src\miniz.h" />
     <ClInclude Include="AnimatedTexture.h" />
     <ClInclude Include="AnimatedGLTexture.h" />
     <ClInclude Include="AssetManager.h" />
@@ -207,6 +208,7 @@ xcopy "$(ProjectDir)..\Data\*" "$(OutDir)Data\" /y /s</Command>
     <ClInclude Include="BezierPath.h" />
     <ClInclude Include="InputManager.h" />
     <ClInclude Include="Level.h" />
+    <ClInclude Include="MapManager.h" />
     <ClInclude Include="MathHelper.h" />
     <ClInclude Include="PhysEntity.h" />
     <ClInclude Include="PhysicsHelper.h" />

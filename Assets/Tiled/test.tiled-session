@@ -1,0 +1,21 @@
+{
+    "Map/SizeTest": {
+        "height": 4300,
+        "width": 2
+    },
+    "activeFile": "",
+    "expandedProjectPaths": [
+    ],
+    "file.lastUsedOpenFilter": "All Files (*)",
+    "fileStates": {
+    },
+    "last.exportedFilePath": "C:/GameDev/_Projects/SDL-OpenGL-Playground/Assets/Tiled",
+    "last.imagePath": "C:/GameDev/_Projects/SDL-OpenGL-Playground/Assets",
+    "map.lastUsedExportFilter": "Tiled map files (*.tmx *.xml)",
+    "openFiles": [
+    ],
+    "project": "test.tiled-project",
+    "recentFiles": [
+    ],
+    "tileset.embedInMap": true
+}
