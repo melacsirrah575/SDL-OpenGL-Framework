@@ -43,6 +43,9 @@
     <Filter Include="Source Files\Utility">
       <UniqueIdentifier>{ee0e7db4-db7a-4e82-9921-0ff23007ce03}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\tmxlite">
+      <UniqueIdentifier>{d951679c-3623-4f3b-8ca1-08990178e8e1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameEntity.cpp">
@@ -140,6 +143,42 @@
     </ClCompile>
     <ClCompile Include="MapManager.cpp">
       <Filter>Source Files\Managers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Libraries\tmxlite\src\FreeFuncs.cpp">
+      <Filter>Source Files\tmxlite</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Libraries\tmxlite\src\ImageLayer.cpp">
+      <Filter>Source Files\tmxlite</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Libraries\tmxlite\src\LayerGroup.cpp">
+      <Filter>Source Files\tmxlite</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Libraries\tmxlite\src\Map.cpp">
+      <Filter>Source Files\tmxlite</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Libraries\tmxlite\src\Object.cpp">
+      <Filter>Source Files\tmxlite</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Libraries\tmxlite\src\ObjectGroup.cpp">
+      <Filter>Source Files\tmxlite</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Libraries\tmxlite\src\ObjectTypes.cpp">
+      <Filter>Source Files\tmxlite</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Libraries\tmxlite\src\Property.cpp">
+      <Filter>Source Files\tmxlite</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Libraries\tmxlite\src\detail\pugixml.cpp">
+      <Filter>Source Files\tmxlite</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Libraries\tmxlite\src\TileLayer.cpp">
+      <Filter>Source Files\tmxlite</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Libraries\tmxlite\src\Tileset.cpp">
+      <Filter>Source Files\tmxlite</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

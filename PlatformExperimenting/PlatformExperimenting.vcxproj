@@ -80,8 +80,8 @@
       <AdditionalIncludeDirectories>$(SolutionDir)Libraries\OpenGL\glm;$(SolutionDir)Libraries\OpenGL\glew\include;$(SolutionDir)Libraries\SDL2\SDL2\include;$(SolutionDir)Libraries\SDL2\SDL2_image\include;$(SolutionDir)Libraries\SDL2\SDL2_ttf\include;$(SolutionDir)Libraries\SDL2\SDL2_mixer\include;$(SolutionDir)\Libraries\tmxlite\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
-      <AdditionalLibraryDirectories>$(ProjectDir)GL\glew\lib\x86;$(ProjectDir)SDL2\SDL2\lib\x86;$(ProjectDir)SDL2\SDL2_image\lib\x86;$(ProjectDir)SDL2\SDL2_ttf\lib\x86;$(ProjectDir)SDL2\SDL2_mixer\lib\x86;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;SDL2_ttf.lib;SDL2_mixer.lib;opengl32.lib;glew32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(ProjectDir)GL\glew\lib\x86;$(ProjectDir)SDL2\SDL2\lib\x86;$(ProjectDir)SDL2\SDL2_image\lib\x86;$(ProjectDir)SDL2\SDL2_ttf\lib\x86;$(ProjectDir)SDL2\SDL2_mixer\lib\x86;$(SolutionDir)Libraries\tmxlite\lib\Debug\x86;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;SDL2_ttf.lib;SDL2_mixer.lib;opengl32.lib;glew32.lib;libtmxlite-s-d.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <SubSystem>Console</SubSystem>
     </Link>
     <PostBuildEvent>
@@ -99,8 +99,8 @@ xcopy "$(ProjectDir)..\Data\*" "$(OutDir)Data\" /y /s</Command>
       <AdditionalIncludeDirectories>$(SolutionDir)Libraries\OpenGL\glm;$(SolutionDir)Libraries\OpenGL\glew\include;$(SolutionDir)Libraries\SDL2\SDL2\include;$(SolutionDir)Libraries\SDL2\SDL2_image\include;$(SolutionDir)Libraries\SDL2\SDL2_ttf\include;$(SolutionDir)Libraries\SDL2\SDL2_mixer\include;$(SolutionDir)\Libraries\tmxlite\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
-      <AdditionalLibraryDirectories>$(SolutionDir)Libraries\OpenGL\glew\lib\Release\x64;$(SolutionDir)Libraries\SDL2\SDL2\lib\x64;$(SolutionDir)Libraries\SDL2\SDL2_image\lib\x64;$(SolutionDir)Libraries\SDL2\SDL2_ttf\lib\x64;$(SolutionDir)Libraries\SDL2\SDL2_mixer\lib\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;SDL2_ttf.lib;SDL2_mixer.lib;opengl32.lib;glew32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)Libraries\OpenGL\glew\lib\Release\x64;$(SolutionDir)Libraries\SDL2\SDL2\lib\x64;$(SolutionDir)Libraries\SDL2\SDL2_image\lib\x64;$(SolutionDir)Libraries\SDL2\SDL2_ttf\lib\x64;$(SolutionDir)Libraries\SDL2\SDL2_mixer\lib\x64;$(SolutionDir)Libraries\tmxlite\lib\Debug\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;SDL2_ttf.lib;SDL2_mixer.lib;opengl32.lib;glew32.lib;libtmxlite-s-d.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <SubSystem>Console</SubSystem>
     </Link>
     <PostBuildEvent>
@@ -122,8 +122,8 @@ xcopy "$(ProjectDir)..\Data\*" "$(OutDir)Data\" /y /s</Command>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalLibraryDirectories>$(ProjectDir)GL\glew\lib\x86;$(ProjectDir)SDL2\SDL2\lib\x86;$(ProjectDir)SDL2\SDL2_image\lib\x86;$(ProjectDir)SDL2\SDL2_ttf\lib\x86;$(ProjectDir)SDL2\SDL2_mixer\lib\x86;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;SDL2_ttf.lib;SDL2_mixer.lib;opengl32.lib;glew32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(ProjectDir)GL\glew\lib\x86;$(ProjectDir)SDL2\SDL2\lib\x86;$(ProjectDir)SDL2\SDL2_image\lib\x86;$(ProjectDir)SDL2\SDL2_ttf\lib\x86;$(ProjectDir)SDL2\SDL2_mixer\lib\x86;$(SolutionDir)Libraries\tmxlite\lib\Release\x86;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;SDL2_ttf.lib;SDL2_mixer.lib;opengl32.lib;glew32.lib;libtmxlite-s.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <SubSystem>Windows</SubSystem>
     </Link>
     <PostBuildEvent>
@@ -145,8 +145,8 @@ xcopy "$(ProjectDir)..\Data\*" "$(OutDir)Data\" /y /s</Command>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalLibraryDirectories>$(SolutionDir)Libraries\OpenGL\glew\lib\Release\x64;$(SolutionDir)Libraries\SDL2\SDL2\lib\x64;$(SolutionDir)Libraries\SDL2\SDL2_image\lib\x64;$(SolutionDir)Libraries\SDL2\SDL2_ttf\lib\x64;$(SolutionDir)Libraries\SDL2\SDL2_mixer\lib\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;SDL2_ttf.lib;SDL2_mixer.lib;opengl32.lib;glew32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)Libraries\OpenGL\glew\lib\Release\x64;$(SolutionDir)Libraries\SDL2\SDL2\lib\x64;$(SolutionDir)Libraries\SDL2\SDL2_image\lib\x64;$(SolutionDir)Libraries\SDL2\SDL2_ttf\lib\x64;$(SolutionDir)Libraries\SDL2\SDL2_mixer\lib\x64;$(SolutionDir)Libraries\tmxlite\lib\Release\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;SDL2_ttf.lib;SDL2_mixer.lib;opengl32.lib;glew32.lib;libtmxlite-s.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <SubSystem>Windows</SubSystem>
     </Link>
     <PostBuildEvent>
@@ -156,6 +156,17 @@ xcopy "$(ProjectDir)..\Data\*" "$(OutDir)Data\" /y /s</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\Libraries\tmxlite\src\detail\pugixml.cpp" />
+    <ClCompile Include="..\Libraries\tmxlite\src\FreeFuncs.cpp" />
+    <ClCompile Include="..\Libraries\tmxlite\src\ImageLayer.cpp" />
+    <ClCompile Include="..\Libraries\tmxlite\src\LayerGroup.cpp" />
+    <ClCompile Include="..\Libraries\tmxlite\src\Map.cpp" />
+    <ClCompile Include="..\Libraries\tmxlite\src\Object.cpp" />
+    <ClCompile Include="..\Libraries\tmxlite\src\ObjectGroup.cpp" />
+    <ClCompile Include="..\Libraries\tmxlite\src\ObjectTypes.cpp" />
+    <ClCompile Include="..\Libraries\tmxlite\src\Property.cpp" />
+    <ClCompile Include="..\Libraries\tmxlite\src\TileLayer.cpp" />
+    <ClCompile Include="..\Libraries\tmxlite\src\Tileset.cpp" />
     <ClCompile Include="AnimatedTexture.cpp" />
     <ClCompile Include="AnimaterGLTexture.cpp" />
     <ClCompile Include="AssetManager.cpp" />
@@ -173,6 +184,7 @@ xcopy "$(ProjectDir)..\Data\*" "$(OutDir)Data\" /y /s</Command>
     <ClCompile Include="Graphics.cpp" />
     <ClCompile Include="InputManager.cpp" />
     <ClCompile Include="Level.cpp" />
+    <ClCompile Include="main.cpp" />
     <ClCompile Include="MapManager.cpp" />
     <ClCompile Include="PhysEntity.cpp" />
     <ClCompile Include="PhysicsManager.cpp" />
