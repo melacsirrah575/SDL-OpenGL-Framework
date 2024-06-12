@@ -6,6 +6,7 @@
 #include "PhysicsManager.h"
 #include "PlatformManager.h"
 #include "Camera.h"
+#include "MapManager.h"
 
 namespace SDLFramework {
 
@@ -23,6 +24,7 @@ namespace SDLFramework {
 		AudioManager* mAudioManager;
 		PhysicsManager* mPhysicsManager;
 		PlatformManager* mPlatformManager;
+		MapManager* mMapManager;
 
 		Timer* mTimer;
 

@@ -53,6 +53,8 @@ namespace SDLFramework {
 		mFlip = SDL_FLIP_NONE;
 	}
 
+	Texture::Texture() { }
+
 	Texture::~Texture() {
 		AssetManager::Instance()->DestroyTexture(mTex);
 		mTex = nullptr;

@@ -5,16 +5,28 @@
 #include <tmxlite/TileLayer.hpp>
 #include <string>
 #include <vector>
+#include "GLTexture.h"
+#include "GLGraphics.h"
 
-class MapManager
-{
-public:
-    MapManager();
-    ~MapManager();
+namespace SDLFramework {
+    class MapManager
+    {
+    public:
+        MapManager();
+        ~MapManager();
 
-    bool loadMap(const std::string& filePath);
-    std::vector<tmx::TileLayer::Tile> getTiles() const;
+        bool loadMap(const std::string& filePath);
+        void Render() const;
 
-private:
-    tmx::Map map;
-};
+        static MapManager* Instance();
+        static void Release();
+
+    private:
+        static MapManager* sInstance;
+
+        tmx::Map map;
+        GLTexture* tileTexture;
+
+        //void setupRendering();
+    };
+}

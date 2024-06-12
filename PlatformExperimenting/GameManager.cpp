@@ -55,6 +55,7 @@ namespace SDLFramework {
 	void GameManager::Render() {
 		mGraphics->ClearBackBuffer();
 		mScreenManager->Render();
+		mMapManager->Render();
 		mGraphics->Render();
 	}
 
@@ -73,6 +74,9 @@ namespace SDLFramework {
 		mTimer = Timer::Instance();
 		mScreenManager = ScreenManager::Instance();
 		mPhysicsManager = PhysicsManager::Instance();
+		mPlatformManager = PlatformManager::Instance();
+		mMapManager = MapManager::Instance();
+
 		mPhysicsManager->SetLayerCollisionMask(PhysicsManager::CollisionLayers::Friendly, PhysicsManager::CollisionFlags::Hostile | PhysicsManager::CollisionFlags::HostileProjectiles | PhysicsManager::CollisionFlags::Platforms);
 		mPhysicsManager->SetLayerCollisionMask(PhysicsManager::CollisionLayers::FriendlyProjectiles, PhysicsManager::CollisionFlags::Hostile);
 		mPhysicsManager->SetLayerCollisionMask(PhysicsManager::CollisionLayers::Hostile, PhysicsManager::CollisionFlags::Friendly | PhysicsManager::CollisionFlags::FriendlyProjectiles);
@@ -105,6 +109,9 @@ namespace SDLFramework {
 		//TODO: Update Platform Manager's Deconstructor to fix nullptr issues.
 		//PlatformManager::Release();
 		//mPlatformManager = nullptr;
+
+		MapManager::Release();
+		mMapManager = nullptr;
 
 		Camera::Release();
 		mCamera = nullptr;

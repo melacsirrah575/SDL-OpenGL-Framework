@@ -47,6 +47,9 @@ namespace SDLFramework {
         mHeight = Surface->h;
     }
 
+    GLTexture::GLTexture() 
+        : ID(0), Surface(nullptr), Data(nullptr) { }
+
     GLTexture::~GLTexture() {
         if (Surface) {
             AssetManager::Instance()->DestroySurface(Surface);

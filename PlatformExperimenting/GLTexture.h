@@ -21,6 +21,7 @@ namespace SDLFramework {
 		GLTexture(std::string filename, bool shouldScroll = true, bool managed = false);
 		GLTexture(std::string filename, int x, int y, int w, int h, bool shouldScroll = true, bool managed = false);
 		GLTexture(std::string text, std::string fontPath, int size, SDL_Color color, bool shouldScroll = true, bool managed = false);
+		GLTexture();
 		virtual ~GLTexture();
 
 		void Generate();

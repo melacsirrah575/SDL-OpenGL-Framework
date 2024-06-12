@@ -7,7 +7,7 @@ int main(int argc, char * args[])
 {
 	GameManager * game = GameManager::Instance();
 
-    MapManager mapManager;
+    //MapManager mapManager;
     //std::string fullPath = SDL_GetBasePath();
     //fullPath.append("Assets/Tiled/TestMap.tmx");
 
