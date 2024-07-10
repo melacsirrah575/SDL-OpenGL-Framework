@@ -2,6 +2,8 @@
 #define __SCREENMANAGER_H
 #include "StartScreen.h"
 #include "PlayScreen.h"
+#include "MapManager.h"
+
 
 class ScreenManager {
 private:
@@ -11,6 +13,7 @@ private:
 	Screens mCurrentScreen;
 
 	InputManager * mInput;
+	MapManager* mMapManager;
 
 	StartScreen * mStartScreen;
 	PlayScreen * mPlayScreen;

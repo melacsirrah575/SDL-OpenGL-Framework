@@ -50,6 +50,7 @@ void ScreenManager::Render() {
 		mStartScreen->Render();
 		break;
 	case Play:
+		mMapManager->Render();
 		mPlayScreen->Render();
 		break;
 	}
@@ -57,15 +58,20 @@ void ScreenManager::Render() {
 
 ScreenManager::ScreenManager() {
 	mInput = InputManager::Instance();
+	mMapManager = MapManager::Instance();
 
 	mStartScreen = new StartScreen();
 	mPlayScreen = new PlayScreen();
 
+	//std::string mapToLoad = SDL_GetBasePath();
+	//mapToLoad.append("Assets/Tiled/");
+	mMapManager->LoadMap("TestMap.tmx");
 	mCurrentScreen = Start;
 }
 
 ScreenManager::~ScreenManager() {
 	mInput = nullptr;
+	mMapManager = nullptr;
 
 	delete mStartScreen;
 	mStartScreen = nullptr;

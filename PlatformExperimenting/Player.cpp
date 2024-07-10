@@ -56,31 +56,31 @@ void Player::HandleMovement() {
 	}
 
 	//Uncomment these out for Y-axis movement
-	// You should comment out Jump code if this is wanted!!!
-	// 
-	//if (mInput->KeyDown(SDL_SCANCODE_UP) || mInput->KeyDown(SDL_SCANCODE_W)) {
-	//	Translate(-Vec2_Up * mMoveSpeed * mTimer->DeltaTime(), World);
-	//}
-	//else if (mInput->KeyDown(SDL_SCANCODE_DOWN) || mInput->KeyDown(SDL_SCANCODE_S)) {
-	//	Translate(Vec2_Up * mMoveSpeed * mTimer->DeltaTime(), World);
-	//}
-
-	if (mInput->KeyPressed(SDL_SCANCODE_SPACE) && mGrounded) {
-		mPlayerJumped = true;
-		mGrounded = false;
-		mJumpTime = 0.0f;
+	//You should comment out Jump code if this is wanted!!!
+	 
+	if (mInput->KeyDown(SDL_SCANCODE_UP) || mInput->KeyDown(SDL_SCANCODE_W)) {
+		Translate(-Vec2_Up * mMoveSpeed * mTimer->DeltaTime(), World);
+	}
+	else if (mInput->KeyDown(SDL_SCANCODE_DOWN) || mInput->KeyDown(SDL_SCANCODE_S)) {
+		Translate(Vec2_Up * mMoveSpeed * mTimer->DeltaTime(), World);
 	}
 
-	if (mPlayerJumped) {
-		HandleJumping();
-	}
+	//if (mInput->KeyPressed(SDL_SCANCODE_SPACE) && mGrounded) {
+	//	mPlayerJumped = true;
+	//	mGrounded = false;
+	//	mJumpTime = 0.0f;
+	//}
+
+	//if (mPlayerJumped) {
+	//	HandleJumping();
+	//}
 
 	HandleBoundsChecking();
 
 	//Gravity Application
-	if ((!mGrounded || !mIsColliding) && !mPlayerJumped) {
-		Translate(Vec2_Up * mMoveSpeed * mTimer->DeltaTime(), World);
-	}
+	//if ((!mGrounded || !mIsColliding) && !mPlayerJumped) {
+	//	Translate(Vec2_Up * mMoveSpeed * mTimer->DeltaTime(), World);
+	//}
 }
 
 void Player::HandleJumping() {

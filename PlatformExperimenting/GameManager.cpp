@@ -55,7 +55,6 @@ namespace SDLFramework {
 	void GameManager::Render() {
 		mGraphics->ClearBackBuffer();
 		mScreenManager->Render();
-		mMapManager->Render();
 		mGraphics->Render();
 	}
 
@@ -75,7 +74,6 @@ namespace SDLFramework {
 		mScreenManager = ScreenManager::Instance();
 		mPhysicsManager = PhysicsManager::Instance();
 		mPlatformManager = PlatformManager::Instance();
-		mMapManager = MapManager::Instance();
 
 		mPhysicsManager->SetLayerCollisionMask(PhysicsManager::CollisionLayers::Friendly, PhysicsManager::CollisionFlags::Hostile | PhysicsManager::CollisionFlags::HostileProjectiles | PhysicsManager::CollisionFlags::Platforms);
 		mPhysicsManager->SetLayerCollisionMask(PhysicsManager::CollisionLayers::FriendlyProjectiles, PhysicsManager::CollisionFlags::Hostile);
@@ -110,8 +108,7 @@ namespace SDLFramework {
 		//PlatformManager::Release();
 		//mPlatformManager = nullptr;
 
-		MapManager::Release();
-		mMapManager = nullptr;
+		MapManager::Instance()->Release();
 
 		Camera::Release();
 		mCamera = nullptr;

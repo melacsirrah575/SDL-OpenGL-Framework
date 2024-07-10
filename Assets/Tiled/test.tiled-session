@@ -12,8 +12,8 @@
             "scale": 1,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 155,
-                "y": 110.5
+                "x": 152,
+                "y": 107.5
             }
         },
         "TestMap.tmx#testTileMap": {
@@ -22,7 +22,7 @@
     },
     "last.exportedFilePath": "C:/GameDev/_Projects/SDL-OpenGL-Playground/Assets/Tiled",
     "last.imagePath": "C:/GameDev/_Projects/SDL-OpenGL-Playground/Assets",
-    "map.lastUsedExportFilter": "Tiled map files (*.tmx *.xml)",
+    "map.lastUsedExportFilter": "JSON map files (*.tmj *.json)",
     "map.lastUsedFormat": "tmx",
     "openFiles": [
         "TestMap.tmx"

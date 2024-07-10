@@ -24,7 +24,6 @@ namespace SDLFramework {
 		AudioManager* mAudioManager;
 		PhysicsManager* mPhysicsManager;
 		PlatformManager* mPlatformManager;
-		MapManager* mMapManager;
 
 		Timer* mTimer;
 

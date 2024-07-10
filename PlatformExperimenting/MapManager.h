@@ -15,7 +15,7 @@ namespace SDLFramework {
         MapManager();
         ~MapManager();
 
-        bool loadMap(const std::string& filePath);
+        bool LoadMap(const std::string& filePath);
         void Render() const;
 
         static MapManager* Instance();
@@ -24,9 +24,9 @@ namespace SDLFramework {
     private:
         static MapManager* sInstance;
 
-        tmx::Map map;
-        GLTexture* tileTexture;
+        tmx::Map mMap;
+        std::vector<GLTexture*> tileTextures;
 
-        //void setupRendering();
+        void LoadTileset(const tmx::Tileset& tileset);
     };
 }

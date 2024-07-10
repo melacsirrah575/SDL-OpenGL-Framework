@@ -17,27 +17,37 @@ namespace SDLFramework {
         sInstance = nullptr;
     }
 
-    MapManager::MapManager() : tileTexture(nullptr)
+    MapManager::MapManager()
     {
         // Initialize GLTexture and set up rendering if needed
     }
 
     MapManager::~MapManager()
     {
-        delete tileTexture;
+        for (auto texture : tileTextures)
+        {
+            delete texture;
+        }
     }
 
-    bool MapManager::loadMap(const std::string& filePath)
+    //CURRENT ISSUE AT HAND
+    //We are trying to set the WHOLE map as a SINGLE Texture
+    //We want to instead loop through the map and make each tile its own Texture
+    bool MapManager::LoadMap(const std::string& filePath)
     {
-        if (map.load(filePath))
+        std::string fullPath = SDL_GetBasePath();
+        fullPath.append("Assets/Tiled/" + filePath);
+
+        if (mMap.load(fullPath))
         {
             std::cout << "Map loaded successfully." << std::endl;
-            // Load tile texture using GLTexture
-            std::string fullPath = SDL_GetBasePath();
-            fullPath.append("Assets/Tiled/TestMap.tmx");
-            tileTexture = new GLTexture();
 
-            tileTexture->SetSurfaceTexture(fullPath, false); // Adjust path as needed
+            // Load each tileset in the map
+            for (const auto& tileset : mMap.getTilesets())
+            {
+                LoadTileset(tileset);
+            }
+
             return true;
         }
         else
@@ -47,18 +57,26 @@ namespace SDLFramework {
         }
     }
 
+    void MapManager::LoadTileset(const tmx::Tileset& tileset) {
+        // Extract the image source and load the texture
+        const std::string& imagePath = tileset.getName() + ".png";
+
+        GLTexture* texture = new GLTexture();
+        texture->SetSurfaceTexture(imagePath, false); // Adjust path if needed
+
+        tileTextures.push_back(texture);
+    }
+
     void MapManager::Render() const
     {
-        for (const auto& layer : map.getLayers())
+        for (const auto& layer : mMap.getLayers())
         {
             if (layer->getType() == tmx::Layer::Type::Tile)
             {
                 const auto& tileLayer = layer->getLayerAs<tmx::TileLayer>();
                 const auto& tiles = tileLayer.getTiles();
-                const auto& tileSize = map.getTileSize();
-                const auto& mapSize = map.getTileCount();
-
-                int firstgid = 1; // Assuming firstgid is 1 based on the .tmx file
+                const auto& tileSize = mMap.getTileSize();
+                const auto& mapSize = mMap.getTileCount();
 
                 for (unsigned y = 0; y < mapSize.y; ++y)
                 {
@@ -69,17 +87,31 @@ namespace SDLFramework {
 
                         if (tileID == 0) continue; // Skip empty tiles
 
+                        // Find the appropriate tileset for this tileID
+                        const tmx::Tileset* tileset = nullptr;
+                        for (const auto& ts : mMap.getTilesets())
+                        {
+                            if (tileID >= ts.getFirstGID() && tileID < ts.getFirstGID() + ts.getTileCount())
+                            {
+                                tileset = &ts;
+                                break;
+                            }
+                        }
+
+                        if (!tileset) continue; // Tile ID not found in any tileset
+
                         // Calculate srcRect
-                        int tileIndexInTileset = tileID - firstgid;
-                        int tilesetColumns = 16; // Assuming the tileset image has 10 columns
+                        int tileIndexInTileset = tileID - tileset->getFirstGID();
+                        int tilesetColumns = tileset->getColumnCount();
                         int srcX = (tileIndexInTileset % tilesetColumns) * tileSize.x;
                         int srcY = (tileIndexInTileset / tilesetColumns) * tileSize.y;
                         SDL_Rect srcRect = { srcX, srcY, static_cast<int>(tileSize.x), static_cast<int>(tileSize.y) };
 
                         SDL_Rect dstRect = { static_cast<int>(x * tileSize.x), static_cast<int>(y * tileSize.y), static_cast<int>(tileSize.x), static_cast<int>(tileSize.y) };
 
-                        std::cout << "Tile ID: " << tiles[tileIndex].ID << std::endl;
-                        GLGraphics::Instance()->DrawSprite(tileTexture, &srcRect, &dstRect, 0.0f, SDL_FLIP_NONE, false);
+                        // Find the appropriate texture
+                        GLTexture* texture = tileTextures[tileset - &mMap.getTilesets()[0]];
+                        GLGraphics::Instance()->DrawSprite(texture, &srcRect, &dstRect, 0.0f, SDL_FLIP_NONE, false);
                     }
                 }
             }
