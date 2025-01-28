@@ -27,7 +27,7 @@ Player::Player() {
 	mPlayerTexture->Position(Vec2_Zero);
 	mPlayerTexture->Scale(Vector2(0.2f, 0.6f));
 
-	mMoveSpeed = 300.0f;
+	mMoveSpeed = 200.0f;
 	mJumpSpeed = 300.0f;
 	mJumpHeight = 5.0f;
 	mJumpSpeed = 10.0f;

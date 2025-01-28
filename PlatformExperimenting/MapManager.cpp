@@ -75,47 +75,61 @@ namespace SDLFramework {
             {
                 const auto& tileLayer = layer->getLayerAs<tmx::TileLayer>();
                 const auto& tiles = tileLayer.getTiles();
-                const auto& tileSize = mMap.getTileSize();
+
+                // Tile size retrieval
                 const auto& mapSize = mMap.getTileCount();
+                const auto& tileSize = mMap.getTileSize();
 
-                for (unsigned y = 0; y < mapSize.y; ++y)
+                for (unsigned int y = 0; y < mapSize.y; ++y)
                 {
-                    for (unsigned x = 0; x < mapSize.x; ++x)
+                    for (unsigned int x = 0; x < mapSize.x; ++x)
                     {
-                        const auto tileIndex = x + y * mapSize.x;
-                        const auto tileID = tiles[tileIndex].ID;
+                        int tileID = tiles[y * mapSize.x + x].ID;
 
-                        if (tileID == 0) continue; // Skip empty tiles
-
-                        // Find the appropriate tileset for this tileID
-                        const tmx::Tileset* tileset = nullptr;
-                        for (const auto& ts : mMap.getTilesets())
+                        if (tileID > 0)
                         {
-                            if (tileID >= ts.getFirstGID() && tileID < ts.getFirstGID() + ts.getTileCount())
+                            const tmx::Tileset* tileset = nullptr;
+
+                            // Find the appropriate tileset for the tile ID
+                            for (const auto& ts : mMap.getTilesets())
                             {
-                                tileset = &ts;
-                                break;
+                                if (tileID >= ts.getFirstGID() && tileID < ts.getFirstGID() + ts.getTileCount())
+                                {
+                                    tileset = &ts;
+                                    break;
+                                }
                             }
+
+                            if (!tileset) continue; // Tile ID not found in any tileset
+
+                            // Calculate srcRect
+                            int tileIndexInTileset = tileID - tileset->getFirstGID();
+                            int tilesetColumns = tileset->getColumnCount();
+                            int srcX = (tileIndexInTileset % tilesetColumns) * tileSize.x;
+                            int srcY = (tileIndexInTileset / tilesetColumns) * tileSize.y;
+                            SDL_Rect srcRect = { srcX, srcY, static_cast<int>(tileSize.x), static_cast<int>(tileSize.y) };
+
+                            SDL_Rect dstRect = { static_cast<int>(x * tileSize.x), static_cast<int>(y * tileSize.y), static_cast<int>(tileSize.x), static_cast<int>(tileSize.y) };
+
+                            // Find the appropriate texture
+                            int textureIndex = tileset - &mMap.getTilesets()[0];
+                            GLTexture* texture = tileTextures[textureIndex];
+
+                            // DEBUG: Print out tile information
+                            std::cout << "Drawing tile: "
+                                << "TileID: " << tileID
+                                << ", TilesetIndex: " << textureIndex
+                                << ", SrcRect: (" << srcRect.x << ", " << srcRect.y << ", " << srcRect.w << ", " << srcRect.h << ")"
+                                << ", DstRect: (" << dstRect.x << ", " << dstRect.y << ", " << dstRect.w << ", " << dstRect.h << ")"
+                                << std::endl;
+
+                            GLGraphics::Instance()->DrawSprite(texture, &srcRect, &dstRect, 0.0f, SDL_FLIP_NONE, false);
                         }
-
-                        if (!tileset) continue; // Tile ID not found in any tileset
-
-                        // Calculate srcRect
-                        int tileIndexInTileset = tileID - tileset->getFirstGID();
-                        int tilesetColumns = tileset->getColumnCount();
-                        int srcX = (tileIndexInTileset % tilesetColumns) * tileSize.x;
-                        int srcY = (tileIndexInTileset / tilesetColumns) * tileSize.y;
-                        SDL_Rect srcRect = { srcX, srcY, static_cast<int>(tileSize.x), static_cast<int>(tileSize.y) };
-
-                        SDL_Rect dstRect = { static_cast<int>(x * tileSize.x), static_cast<int>(y * tileSize.y), static_cast<int>(tileSize.x), static_cast<int>(tileSize.y) };
-
-                        // Find the appropriate texture
-                        GLTexture* texture = tileTextures[tileset - &mMap.getTilesets()[0]];
-                        GLGraphics::Instance()->DrawSprite(texture, &srcRect, &dstRect, 0.0f, SDL_FLIP_NONE, false);
                     }
                 }
             }
         }
     }
+
 }
 
